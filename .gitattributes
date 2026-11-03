@@ -1,0 +1,4 @@
+/Reports/LocalReports.exe filter=lfs diff=lfs merge=lfs -text
+/Reports/build/LocalReports/LocalReports.pkg filter=lfs diff=lfs merge=lfs -text
+/Reports/dist/LocalReports.exe filter=lfs diff=lfs merge=lfs -text
+/lib/driver-bundle-1.57.0.jar filter=lfs diff=lfs merge=lfs -text

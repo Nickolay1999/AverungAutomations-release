@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AverungAutomation · Automations (клик по строке)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            background: #0c0c0c;
+            color: #e5e5e5;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .card {
+            max-width: 1300px;
+            width: 100%;
+            background: #1a1a1a;
+            border-radius: 24px;
+            padding: 28px 24px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+            backdrop-filter: blur(2px);
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 400;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.5px;
+            background: linear-gradient(145deg, #f0f0f0, #b0b0b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-left: 4px solid #3a7ca5;
+            padding-left: 20px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-section {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: #242424;
+            padding: 6px 12px 6px 18px;
+            border-radius: 60px;
+            border: 1px solid #3a3a3a;
+            flex: 2 1 300px;
+        }
+
+        .search-section input {
+            background: transparent;
+            border: none;
+            color: #f0f0f0;
+            font-size: 0.95rem;
+            padding: 8px 0;
+            width: 100%;
+            outline: none;
+        }
+
+        .search-section input::placeholder {
+            color: #777;
+            font-style: italic;
+        }
+
+        .search-section button {
+            background: #2d2d2d;
+            border: none;
+            color: #ccc;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.15s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            border: 1px solid #4b4b4b;
+            white-space: nowrap;
+        }
+
+        .search-section button:hover {
+            background: #3e3e3e;
+            color: white;
+            border-color: #6a6a6a;
+        }
+
+        .btn-primary {
+            background: #1e4f6b;
+            box-shadow: 0 4px 12px #102b38, 0 0 0 1px #3d7e9e inset;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .btn-primary:hover {
+            background: #256f94;
+            box-shadow: 0 6px 14px #143e52, 0 0 0 1px #58a9d0 inset;
+        }
+
+        .btn-secondary {
+            background: #2d2d2d;
+            border: none;
+            color: #ddd;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5), 0 0 0 1px #3d3d3d inset;
+            white-space: nowrap;
+        }
+
+        .btn-secondary:hover {
+            background: #3d3d3d;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.7), 0 0 0 1px #5a5a5a inset;
+            color: #fff;
+        }
+
+        .table-container {
+            border-radius: 20px;
+            background: #141414;
+            overflow-x: auto;
+            border: 1px solid #2b2b2b;
+            margin-bottom: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th {
+            text-align: left;
+            padding: 18px 16px;
+            background: #1f1f1f;
+            font-weight: 500;
+            color: #aaa;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #333;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #282828;
+            color: #ccc;
+            font-size: 0.95rem;
+        }
+
+        tr {
+            cursor: pointer;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #232323;
+        }
+
+        .description-cell {
+            max-width: 400px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #b0b0b0;
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footer-message {
+            background: #1e1e1e;
+            border-radius: 40px;
+            padding: 12px 20px;
+            border: 1px solid #363636;
+            font-size: 0.9rem;
+            color: #9a9a9a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .loader {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #3d3d3d;
+            border-top: 2px solid #70b0d0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .status-text {
+            flex: 1;
+        }
+
+        .filter-tag {
+            background: #2b4f5f;
+            color: #c0e0ff;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            border: 1px solid #4387a3;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-tag button {
+            background: none;
+            border: none;
+            color: #ffa0a0;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .action-btn {
+            background: #2a2a2a;
+            border: none;
+            color: #bbb;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s ease;
+            box-shadow: 0 2px 4px black;
+            border: 1px solid #3e3e3e;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .action-btn:hover {
+            background: #3c3c3c;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="nav-bar">
+        <a href="/main" class="btn-secondary nav-link">🏠 Главная</a>
+        <a href="/automations" class="btn-secondary nav-link">⚙️ Автоматизации</a>
+    </div>
+    <h1>⚙️ AverungAutomation · Automations</h1>
+
+    <div class="toolbar">
+        <div class="search-section">
+            <input type="text" id="automationSearchInput" placeholder="Фильтр по названию" autocomplete="off">
+            <button id="automationSearchBtn">🔍 Найти</button>
+            <button id="automationClearSearchBtn">✕ Сброс</button>
+        </div>
+        <button id="refreshBtn" class="btn-primary">⟳ Обновить</button>
+        <span style="flex:1"></span>
+        <span id="loadingIndicator" style="display: flex; align-items: center; gap:6px; color:#aaa;">
+            <span class="loader" style="display:none;" id="spinner"></span>
+            <span id="actionMessage">ready</span>
+        </span>
+    </div>
+
+    <div id="automationFilterIndicator" style="margin-bottom: 16px; min-height: 30px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;"></div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Название</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody id="automationTableBody">
+            <tr><td colspan="2" style="text-align:center; padding: 40px; color:#666;">⏳ Загрузка...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-message" id="messageBox">
+        <span class="status-text" id="messageText">Сервер: http://localhost:8888</span>
+        <button id="clearMsgBtn" class="clear-btn action-btn">✕ очистить</button>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ---------- CONFIG ----------
+        const BASE_URL = window.location.origin;
+
+        // ---------- СТАТИЧЕСКИЕ ЗАПИСИ (алгоритмы) ----------
+        const STATIC_ITEMS = [
+            {
+                id: 'static-basket-algorithm',
+                name: 'Автокорзина WB',
+                description: 'Добавление товаров в корзину',
+                isStatic: true,
+                path: '/automations/baskets'
+            },
+            {
+                id: 'static-pvz-algorithm',
+                name: 'Автодобавление ПВЗ WB',
+                description: 'Добавление ПВЗ в аккаунт WB.',
+                isStatic: true,
+                path: '/automations/pvz'
+            },
+            {
+                id: 'static-ozon-report',
+                name: 'Озон отчеты',
+                description: 'Формирование и выгрузка отчетов Ozon.',
+                isStatic: true,
+                path: '/automations/ozon_report/report'
+            },
+            {
+                id: 'static-order-algorithm',
+                name: 'Автовыкуп WB DBS/FBO',
+                description: 'Автоматическое оформление заказов (выкуп)',
+                isStatic: true,
+                path: '/automations/order'
+            },
+            {
+                id: 'static-registration-algorithm',
+                name: 'Авторегистрация WB',
+                description: 'Автоматическая регистрация аккаунтов на WB.',
+                isStatic: true,
+                path: '/automations/registrations'
+            }
+        ];
+
+        // DOM элементы
+        const tbody = document.getElementById('automationTableBody');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const spinner = document.getElementById('spinner');
+        const actionMessage = document.getElementById('actionMessage');
+        const messageText = document.getElementById('messageText');
+        const clearMsgBtn = document.getElementById('clearMsgBtn');
+        const searchInput = document.getElementById('automationSearchInput');
+        const searchBtn = document.getElementById('automationSearchBtn');
+        const clearSearchBtn = document.getElementById('automationClearSearchBtn');
+        const filterIndicator = document.getElementById('automationFilterIndicator');
+
+        // Состояния
+        let currentQuery = '';
+        let searchDebounceTimer = null;
+
+        // ----- Вспомогательные функции -----
+        function setLoading(loading, msg) {
+            spinner.style.display = loading ? 'inline-block' : 'none';
+            if (msg !== undefined) {
+                actionMessage.innerText = msg;
+            }
+        }
+
+        function setMessage(text, isError = false) {
+            messageText.innerText = text;
+            const box = document.getElementById('messageBox');
+            if (isError) {
+                box.style.background = '#2d1a1a';
+                box.style.borderColor = '#a23c3c';
+            } else {
+                box.style.background = '#1e1e1e';
+                box.style.borderColor = '#363636';
+            }
+        }
+
+        function escapeHtml(unsafe) {
+            if (!unsafe) return unsafe;
+            return unsafe.replace(/[&<>"]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                if (m === '"') return '&quot;';
+                return m;
+            });
+        }
+
+        function updateIndicators() {
+            let html = '';
+            if (currentQuery) {
+                html += `<span class="filter-tag">🔍 фильтр: “${escapeHtml(currentQuery)}” <button id="removeFilterBtn" title="убрать фильтр">✕</button></span>`;
+            }
+            filterIndicator.innerHTML = html;
+            if (currentQuery) {
+                document.getElementById('removeFilterBtn')?.addEventListener('click', () => {
+                    clearSearch();
+                });
+            }
+        }
+
+        function clearSearch() {
+            clearTimeout(searchDebounceTimer);
+            searchInput.value = '';
+            currentQuery = '';
+            updateIndicators();
+            fetchAutomations();
+        }
+
+        function filterStaticItemsByQuery(query) {
+            if (!query || query.trim() === '') return [...STATIC_ITEMS];
+            const lowerQuery = query.toLowerCase().trim();
+            return STATIC_ITEMS.filter(item => item.name.toLowerCase().includes(lowerQuery));
+        }
+
+        // ---------- Загрузка автоматизаций с сервера + статические ----------
+        async function fetchAutomations(query = currentQuery) {
+            setLoading(true, 'загрузка...');
+            try {
+                let url = `${BASE_URL}/automations/get_automations`;
+                if (query) {
+                    url += `?query=${encodeURIComponent(query)}`;
+                }
+                const resp = await fetch(url);
+                if (!resp.ok) {
+                    let errBody = '';
+                    try { errBody = await resp.text(); } catch (_) {}
+                    throw new Error(`HTTP ${resp.status}: ${resp.statusText} — ${errBody}`);
+                }
+
+                const data = await resp.json();
+                if (!data || typeof data !== 'object') {
+                    throw new Error('Ответ сервера не является объектом');
+                }
+
+                if (data.status !== true) {
+                    const errorMsg = data.message || 'Неизвестная ошибка (status не true)';
+                    throw new Error(`API вернуло status: false — ${errorMsg}`);
+                }
+
+                let serverAutomations = Array.isArray(data.data) ? data.data : [];
+
+                const filteredStatic = filterStaticItemsByQuery(query);
+                const staticToAdd = [];
+                for (const staticItem of filteredStatic) {
+                    const alreadyExists = serverAutomations.some(item => item.id === staticItem.id);
+                    if (!alreadyExists) {
+                        staticToAdd.push(staticItem);
+                    }
+                }
+
+                const combinedItems = [...serverAutomations, ...staticToAdd];
+                renderAutomations(combinedItems);
+
+                const staticCount = staticToAdd.length;
+                const total = combinedItems.length;
+                setMessage(`✅ загружено ${total} записей (${serverAutomations.length} из API, ${staticCount} алгоритмов)` + (query ? `, фильтр: “${query}”` : ''));
+            } catch (err) {
+                console.error(err);
+                setMessage(`❌ Ошибка: ${err.message}`, true);
+                tbody.innerHTML = `<tr><td colspan="2" style="text-align:center; padding: 40px; color:#b66;">⚠️ не удалось загрузить<br><span style="font-size:0.8rem;">${escapeHtml(err.message)}</span></td></tr>`;
+            } finally {
+                setLoading(false, '');
+            }
+        }
+
+        // ----- ОТРИСОВКА ТАБЛИЦЫ с кликом по строке -----
+        function renderAutomations(items) {
+            if (!items || items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="2" style="text-align:center; padding: 40px; color:#666;">📭 нет автоматизаций, соответствующих фильтру</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            for (let item of items) {
+                const name = item.name || 'Без имени';
+                const description = item.description || '—';
+                const shortDesc = description.length > 100 ? description.substring(0, 97) + '…' : description;
+                const isStatic = item.isStatic === true;
+
+                const safeName = escapeHtml(name);
+                const safeShortDesc = escapeHtml(shortDesc);
+                const safeFullDesc = escapeHtml(description);
+
+                // Формируем URL для перехода
+                let url = '';
+                if (isStatic) {
+                    url = item.path || '/';
+                } else {
+                    const id = item.id || '?';
+                    url = `/automations/${id}`;
+                }
+
+                html += `<tr data-url="${escapeHtml(url)}" data-static="${isStatic ? 'true' : 'false'}">
+                    <td><strong style="color:#fff;">${safeName}</strong></td>
+                    <td class="description-cell" title="${safeFullDesc}">${safeShortDesc}</td>
+                </tr>`;
+            }
+
+            tbody.innerHTML = html;
+
+            // Делегирование клика на tbody
+            tbody.removeEventListener('click', handleRowClick);
+            tbody.addEventListener('click', handleRowClick);
+        }
+
+        function handleRowClick(e) {
+            // Находим ближайший tr с data-url
+            const tr = e.target.closest('tr');
+            if (!tr) return;
+            const url = tr.getAttribute('data-url');
+            if (!url) return;
+
+            // Определяем, статическая ли запись (чтобы открывать в новой вкладке)
+            const isStatic = tr.getAttribute('data-static') === 'true';
+            if (isStatic) {
+                window.open(url, '_blank');
+                setMessage(`🔁 Открыта страница алгоритма: ${url}`, false);
+            } else {
+                window.location.href = url;
+            }
+        }
+
+        // ---------- Обработчики UI ----------
+        refreshBtn.addEventListener('click', () => fetchAutomations(currentQuery));
+
+        searchBtn.addEventListener('click', () => {
+            clearTimeout(searchDebounceTimer);
+            const query = searchInput.value.trim();
+            currentQuery = query;
+            updateIndicators();
+            fetchAutomations(currentQuery);
+        });
+
+        clearSearchBtn.addEventListener('click', clearSearch);
+
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchDebounceTimer);
+            const query = e.target.value.trim();
+            searchDebounceTimer = setTimeout(() => {
+                currentQuery = query;
+                updateIndicators();
+                fetchAutomations(currentQuery);
+            }, 180);
+        });
+
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                clearTimeout(searchDebounceTimer);
+                searchBtn.click();
+            }
+        });
+
+        clearMsgBtn.addEventListener('click', () => setMessage('Ready.'));
+
+        // ---------- Инициализация ----------
+        updateIndicators();
+        fetchAutomations();
+    })();
+</script>
+</body>
+</html>

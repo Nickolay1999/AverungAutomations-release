@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск ПВЗ · Averung</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            background: #0c0c0c;
+            color: #e5e5e5;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .card {
+            max-width: 1300px;
+            width: 100%;
+            background: #1a1a1a;
+            border-radius: 24px;
+            padding: 28px 24px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+            backdrop-filter: blur(2px);
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 400;
+            margin: 0 0 20px 0;
+            letter-spacing: -0.5px;
+            background: linear-gradient(145deg, #f0f0f0, #b0b0b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-left: 4px solid #3a7ca5;
+            padding-left: 20px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-section {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: #242424;
+            padding: 6px 12px 6px 18px;
+            border-radius: 60px;
+            border: 1px solid #3a3a3a;
+            flex: 3 1 500px;
+        }
+
+        .search-section input {
+            background: transparent;
+            border: none;
+            color: #f0f0f0;
+            font-size: 0.95rem;
+            padding: 8px 0;
+            width: 100%;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .search-section input::placeholder {
+            color: #777;
+            font-style: italic;
+        }
+
+        .btn-primary {
+            background: #1e4f6b;
+            box-shadow: 0 4px 12px #102b38, 0 0 0 1px #3d7e9e inset;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .btn-primary:hover {
+            background: #256f94;
+            box-shadow: 0 6px 14px #143e52, 0 0 0 1px #58a9d0 inset;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: #2d2d2d;
+            border: none;
+            color: #ddd;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5), 0 0 0 1px #3d3d3d inset;
+            white-space: nowrap;
+        }
+
+        .btn-secondary:hover {
+            background: #3d3d3d;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.7), 0 0 0 1px #5a5a5a inset;
+            color: #fff;
+        }
+
+        .btn-secondary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .table-container {
+            border-radius: 20px;
+            background: #141414;
+            overflow-x: auto;
+            border: 1px solid #2b2b2b;
+            margin-bottom: 24px;
+            max-height: 520px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 500px;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px 8px;
+            background: #1f1f1f;
+            font-weight: 500;
+            color: #aaa;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #333;
+            text-transform: uppercase;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #282828;
+            color: #ccc;
+            font-size: 0.9rem;
+            background: #1a1a1a;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #232323;
+        }
+
+        .num-col {
+            width: 50px;
+            text-align: center;
+            color: #888;
+        }
+
+        .address-col {
+            word-break: break-word;
+        }
+
+        .actions-cell {
+            white-space: nowrap;
+            width: 70px;
+            text-align: center;
+        }
+
+        .copy-btn {
+            background: #2a2a2a;
+            border: none;
+            color: #bbb;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s ease;
+            box-shadow: 0 2px 4px black;
+            border: 1px solid #3e3e3e;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .copy-btn:hover {
+            background: #3c6e8c;
+            color: white;
+            border-color: #5a9ac0;
+        }
+
+        .footer-message {
+            background: #1e1e1e;
+            border-radius: 40px;
+            padding: 12px 20px;
+            border: 1px solid #363636;
+            font-size: 0.9rem;
+            color: #9a9a9a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .loader {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #3d3d3d;
+            border-top: 2px solid #70b0d0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .status-text {
+            flex: 1;
+        }
+
+        .action-btn {
+            background: #2a2a2a;
+            border: none;
+            color: #bbb;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s ease;
+            box-shadow: 0 2px 4px black;
+            border: 1px solid #3e3e3e;
+        }
+
+        .action-btn:hover {
+            background: #3c3c3c;
+            color: white;
+        }
+
+        .info-badge {
+            background: #1e4f6b33;
+            border-left: 3px solid #3a7ca5;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #b0d4f0;
+        }
+
+        .clear-btn {
+            background: #2a2a2a;
+        }
+
+        .copy-feedback {
+            transition: all 0.1s ease;
+        }
+
+        /* Модальное окно для обновления ПВЗ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(3px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+
+        .modal {
+            background: #1e1e1e;
+            border: 1px solid #3a3a3a;
+            border-radius: 24px;
+            padding: 28px 24px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+            text-align: center;
+        }
+
+        .modal h2 {
+            margin-top: 0;
+            color: #e5e5e5;
+            font-weight: 400;
+            font-size: 1.5rem;
+        }
+
+        .modal p {
+            color: #b0b0b0;
+            line-height: 1.5;
+            margin: 16px 0 24px;
+            font-size: 0.95rem;
+        }
+
+        .modal button {
+            min-width: 140px;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="nav-bar">
+        <a href="/main" class="btn-secondary nav-link">🏠 Главная</a>
+        <a href="/automations/pvz" class="btn-secondary nav-link">➕ Добавление ПВЗ</a>
+        <a href="/automations" class="btn-secondary nav-link">⚙️ Автоматизации</a>
+    </div>
+
+    <h1>📍 Поиск ПВЗ · Офисы выдачи</h1>
+
+    <div class="toolbar">
+        <div class="search-section">
+            <input type="text" id="searchInput" placeholder="Введите адрес, улицу или метро... (автопоиск от 10 символов)" autocomplete="off">
+        </div>
+        <button id="searchBtn" class="btn-primary" type="button">🔍 Найти</button>
+        <button id="clearResultsBtn" class="btn-secondary" type="button">🗑 Очистить</button>
+        <button id="updatePvzBtn" class="btn-secondary" type="button" title="Запустить обновление ПВЗ (доступно один раз до перезагрузки)">🔄 Обновить ПВЗ</button>
+        <span style="flex:1"></span>
+        <span id="loadingIndicator" style="display: flex; align-items: center; gap:6px; color:#aaa;">
+            <span class="loader" style="display:none;" id="spinner"></span>
+            <span id="actionMessage"></span>
+        </span>
+    </div>
+
+    <div class="table-container">
+        <table id="resultsTable">
+            <thead>
+            <tr>
+                <th>№</th>
+                <th>ID ПВЗ</th>
+                <th>Адрес</th>
+                <th style="width: 85px;">Действия</th>
+            </tr>
+            </thead>
+            <tbody id="tableBody">
+            <tr class="empty-row">
+                <td colspan="4" style="text-align: center; padding: 32px; color: #666;">🔎 Введите запрос (минимум 10 символов для автоматического поиска) или нажмите «Найти»</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-message" id="messageBox">
+        <span class="status-text" id="messageText">Сервер: … | Автопоиск ≥10 символов</span>
+        <button id="clearMsgBtn" class="action-btn clear-btn" type="button">✕ очистить</button>
+    </div>
+</div>
+
+<!-- Модальное окно для процесса обновления ПВЗ -->
+<div id="updateModal" class="modal-overlay" style="display: none;">
+    <div class="modal">
+        <h2>⏳ Обновление ПВЗ</h2>
+        <p id="updateModalText">
+            Процесс обновления запущен. Это может занять длительное время.
+            Пожалуйста, не закрывайте программу и не перезагружайте страницу.
+        </p>
+        <button id="updateModalClose" class="btn-primary" type="button">Понятно</button>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ------------------- КОНФИГУРАЦИЯ -------------------
+        // BASE_URL берётся из адресной строки браузера:
+        const BASE_URL = window.location.origin;
+        const SEARCH_ENDPOINT = '/tools/search_pvz';
+        const UPDATE_ENDPOINT = '/tools/update_pvz';
+        const AUTO_SEARCH_MIN_LEN = 10;   // автоматический поиск только если введено >=10 символов
+
+        // ------------------- DOM ЭЛЕМЕНТЫ -------------------
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const clearResultsBtn = document.getElementById('clearResultsBtn');
+        const updatePvzBtn = document.getElementById('updatePvzBtn');
+        const tableBody = document.getElementById('tableBody');
+        const spinner = document.getElementById('spinner');
+        const actionMessageSpan = document.getElementById('actionMessage');
+        const messageText = document.getElementById('messageText');
+        const clearMsgBtn = document.getElementById('clearMsgBtn');
+
+        // Модальное окно обновления
+        const updateModal = document.getElementById('updateModal');
+        const updateModalText = document.getElementById('updateModalText');
+        const updateModalClose = document.getElementById('updateModalClose');
+
+        // ------------------- ПЕРЕМЕННЫЕ -------------------
+        let currentSearchTerm = '';
+        let debounceTimer = null;
+        let updateRequested = false; // защита от повторного нажатия до перезагрузки
+
+        // ------------------- ВСПОМОГАТЕЛЬНЫЕ UI -------------------
+        function setLoading(loading, msg) {
+            spinner.style.display = loading ? 'inline-block' : 'none';
+            if (msg !== undefined) actionMessageSpan.innerText = msg;
+        }
+
+        function setMessage(text, isError = false) {
+            messageText.innerText = text;
+            const box = document.getElementById('messageBox');
+            if (isError) {
+                box.style.background = '#2d1a1a';
+                box.style.borderColor = '#a23c3c';
+            } else {
+                box.style.background = '#1e1e1e';
+                box.style.borderColor = '#363636';
+            }
+            // Сброс стиля ошибки через 4 секунды
+            if (!isError) {
+                setTimeout(() => {
+                    if (messageText.innerText === text && !isError) {
+                        box.style.background = '#1e1e1e';
+                        box.style.borderColor = '#363636';
+                    }
+                }, 4000);
+            }
+        }
+
+        // Кратковременное уведомление без изменения основной панели
+        function showTemporaryMessage(text, isError = false) {
+            const originalText = messageText.innerText;
+            setMessage(text, isError);
+            setTimeout(() => {
+                if (messageText.innerText === text) {
+                    setMessage(originalText, false);
+                }
+            }, 2000);
+        }
+
+        // Очистка таблицы (пустое состояние)
+        function clearTable() {
+            tableBody.innerHTML = '';
+            const emptyRow = document.createElement('tr');
+            emptyRow.className = 'empty-row';
+            emptyRow.innerHTML = '<td colspan="4" style="text-align: center; padding: 32px; color: #666;">🔍 Ничего не найдено. Попробуйте другой запрос.</td>';
+            tableBody.appendChild(emptyRow);
+        }
+
+        function showEmptyMessage(text) {
+            tableBody.innerHTML = '';
+            const emptyRow = document.createElement('tr');
+            emptyRow.className = 'empty-row';
+            emptyRow.innerHTML = `<td colspan="4" style="text-align: center; padding: 32px; color: #666;">${text}</td>`;
+            tableBody.appendChild(emptyRow);
+        }
+
+        // Функция копирования текста в буфер обмена
+        async function copyToClipboard(text, type = 'address') {
+            try {
+                await navigator.clipboard.writeText(text);
+                showTemporaryMessage(`✅ ${type === 'address' ? 'Адрес' : 'ID'} скопирован: ${text.substring(0, 50)}${text.length > 50 ? '…' : ''}`, false);
+            } catch (err) {
+                console.error('Ошибка копирования:', err);
+                showTemporaryMessage('❌ Не удалось скопировать. Разрешите доступ к буферу обмена.', true);
+            }
+        }
+
+        // Рендер таблицы с добавлением кнопки копирования для каждой строки
+        function renderResults(data) {
+            tableBody.innerHTML = '';
+            if (!data || data.length === 0) {
+                showEmptyMessage('🏷️ Нет ПВЗ, соответствующих запросу. Измените условия поиска.');
+                return;
+            }
+
+            const validItems = data.filter(item => item && (item.id !== undefined || item.address !== undefined));
+            if (validItems.length === 0) {
+                showEmptyMessage('⚠️ Получены некорректные данные от сервера (отсутствуют поля id/address).');
+                return;
+            }
+
+            let rowNumber = 0;
+            validItems.forEach(item => {
+                rowNumber++;
+                const tr = document.createElement('tr');
+
+                // №
+                const tdNum = document.createElement('td');
+                tdNum.className = 'num-col';
+                tdNum.textContent = rowNumber;
+                tr.appendChild(tdNum);
+
+                // ID ПВЗ
+                const tdId = document.createElement('td');
+                const idValue = item.id ?? '—';
+                tdId.textContent = idValue;
+                tr.appendChild(tdId);
+
+                // Адрес
+                const tdAddress = document.createElement('td');
+                tdAddress.className = 'address-col';
+                const addressValue = item.address ?? 'Адрес не указан';
+                tdAddress.textContent = addressValue;
+                tr.appendChild(tdAddress);
+
+                // Действия: кнопка копирования адреса (основное)
+                const tdActions = document.createElement('td');
+                tdActions.className = 'actions-cell';
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-btn';
+                copyBtn.innerHTML = '📋 Копировать';
+                copyBtn.title = 'Скопировать адрес ПВЗ';
+                copyBtn.type = 'button';
+                // При клике копируем адрес
+                copyBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (addressValue && addressValue !== 'Адрес не указан') {
+                        copyToClipboard(addressValue, 'address');
+                    } else {
+                        showTemporaryMessage('⚠️ Нет адреса для копирования', true);
+                    }
+                });
+                tdActions.appendChild(copyBtn);
+                tr.appendChild(tdActions);
+
+                tableBody.appendChild(tr);
+            });
+
+            setMessage(`✅ Найдено ${validItems.length} пунктов выдачи`, false);
+        }
+
+        // ------------------- ОСНОВНОЙ ЗАПРОС К СЕРВЕРУ -------------------
+        async function performSearch(searchTerm, isForced = false) {
+            const trimmed = searchTerm.trim();
+
+            // Если запрос пустой — очищаем таблицу и выходим
+            if (trimmed === '') {
+                clearTable();
+                setMessage('Введите адрес для поиска ПВЗ', false);
+                setLoading(false, '');
+                currentSearchTerm = '';
+                return;
+            }
+
+            // Если не принудительный поиск (автоматический) и длина меньше минимальной — не отправляем запрос
+            if (!isForced && trimmed.length < AUTO_SEARCH_MIN_LEN) {
+                // Не очищаем таблицу, просто не делаем ничего, но сообщаем пользователю в статус (ненавязчиво)
+                setMessage(`🔎 Для автоматического поиска нужно минимум ${AUTO_SEARCH_MIN_LEN} символов. Сейчас: ${trimmed.length}`, false);
+                return;
+            }
+
+            const url = `${BASE_URL}${SEARCH_ENDPOINT}?search=${encodeURIComponent(trimmed)}`;
+            setLoading(true, isForced ? 'принудительный поиск...' : 'автопоиск...');
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    let errorDetail = `HTTP ${response.status}`;
+                    try {
+                        const errorData = await response.json();
+                        errorDetail = errorData.msg || errorData.message || errorDetail;
+                    } catch (e) {
+                        errorDetail = await response.text().catch(() => errorDetail);
+                    }
+                    throw new Error(`Ошибка сервера: ${errorDetail}`);
+                }
+
+                const result = await response.json();
+                let items = [];
+                if (Array.isArray(result)) {
+                    items = result;
+                } else if (result && typeof result === 'object') {
+                    if (Array.isArray(result.data)) items = result.data;
+                    else if (Array.isArray(result.items)) items = result.items;
+                    else if (Array.isArray(result.results)) items = result.results;
+                    else {
+                        throw new Error('Сервер вернул не массив и не распознанную структуру');
+                    }
+                } else {
+                    throw new Error('Некорректный формат ответа сервера');
+                }
+
+                renderResults(items);
+                currentSearchTerm = trimmed;
+                setLoading(false, '');
+            } catch (err) {
+                console.error('Search error:', err);
+                setMessage(`❌ Ошибка поиска: ${err.message}`, true);
+                clearTable();
+                setLoading(false, '');
+                showEmptyMessage(`⚠️ Не удалось выполнить поиск: ${err.message}`);
+            }
+        }
+
+        // ------------------- ОБНОВЛЕНИЕ ПВЗ -------------------
+        async function triggerUpdatePvz() {
+            if (updateRequested) return;
+            updateRequested = true;
+
+            updatePvzBtn.disabled = true;
+            updatePvzBtn.innerText = '⏳ Обновление...';
+
+            // Показываем модальное окно сразу после нажатия
+            updateModalText.innerText = 'Процесс обновления запущен. Это может занять длительное время. Пожалуйста, не закрывайте программу и не перезагружайте страницу.';
+            updateModal.style.display = 'flex';
+
+            setLoading(true, 'запуск обновления ПВЗ...');
+
+            try {
+                // Если сервер ожидает POST, замените на: fetch(url, { method: 'POST' })
+                const url = `${BASE_URL}${UPDATE_ENDPOINT}`;
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    let errorDetail = `HTTP ${response.status}`;
+                    try {
+                        const errorData = await response.json();
+                        errorDetail = errorData.msg || errorData.message || errorDetail;
+                    } catch (e) {
+                        errorDetail = await response.text().catch(() => errorDetail);
+                    }
+                    throw new Error(errorDetail);
+                }
+
+                // Успешный ответ — можно обновить текст в модалке
+                updateModalText.innerText = '✅ Запрос на обновление принят. Процесс может занять длительное время. Пожалуйста, не закрывайте программу и не перезагружайте страницу.';
+                setMessage('✅ Запрос на обновление ПВЗ отправлен. Процесс может быть долгим.', false);
+            } catch (err) {
+                console.error('Update error:', err);
+                updateModalText.innerText = `❌ Не удалось запустить обновление: ${err.message}`;
+                setMessage(`❌ Ошибка запуска обновления: ${err.message}`, true);
+            } finally {
+                setLoading(false, '');
+                // Кнопка остаётся disabled до перезагрузки страницы — по требованию
+            }
+        }
+
+        // ------------------- ОБРАБОТЧИКИ С DEBOUNCE (АВТОМАТИЧЕСКИЙ ПОИСК) -------------------
+        function handleSearchInput() {
+            const value = searchInput.value;
+            if (debounceTimer) clearTimeout(debounceTimer);
+
+            debounceTimer = setTimeout(() => {
+                // Если текущее значение изменилось относительно последнего поиска (или пустое)
+                if (value !== currentSearchTerm) {
+                    // Если поле пустое — сразу очищаем таблицу
+                    if (value.trim() === '') {
+                        clearTable();
+                        setMessage('Введите адрес для поиска ПВЗ', false);
+                        currentSearchTerm = '';
+                        return;
+                    }
+                    // Автоматический поиск (isForced = false) — учитывается AUTO_SEARCH_MIN_LEN
+                    performSearch(value, false);
+                }
+            }, 400); // комфортная задержка
+        }
+
+        // Принудительный поиск (кнопка / Enter) — всегда выполняется, даже для коротких запросов
+        function forceSearch() {
+            if (debounceTimer) clearTimeout(debounceTimer);
+            const value = searchInput.value;
+            performSearch(value, true);
+        }
+
+        // Очистка всего: поля и результатов
+        function clearAll() {
+            if (debounceTimer) clearTimeout(debounceTimer);
+            searchInput.value = '';
+            currentSearchTerm = '';
+            clearTable();
+            setMessage('Поисковая форма очищена. Введите адрес (автопоиск от 10 символов).', false);
+            showEmptyMessage('🔎 Введите запрос (минимум 10 символов для автоматического поиска) или нажмите «Найти»');
+        }
+
+        // ------------------- ИНИЦИАЛИЗАЦИЯ -------------------
+        function init() {
+            showEmptyMessage('🔎 Введите адрес или ID пункта выдачи (автопоиск от 10 символов)');
+            setMessage(`Сервер: ${BASE_URL}${SEARCH_ENDPOINT} | Автопоиск ≥${AUTO_SEARCH_MIN_LEN} символов`, false);
+
+            searchInput.addEventListener('input', handleSearchInput);
+            searchBtn.addEventListener('click', forceSearch);
+            clearResultsBtn.addEventListener('click', clearAll);
+            clearMsgBtn.addEventListener('click', () => {
+                setMessage(`Сервер: ${BASE_URL}${SEARCH_ENDPOINT} | Автопоиск ≥${AUTO_SEARCH_MIN_LEN} символов`, false);
+            });
+
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    forceSearch();
+                }
+            });
+
+            // Дополнительная обработка: если пользователь очищает поле через крестик браузера
+            searchInput.addEventListener('search', (e) => {
+                if (searchInput.value === '') {
+                    clearAll();
+                }
+            });
+
+            // Обработчики для обновления ПВЗ
+            updatePvzBtn.addEventListener('click', triggerUpdatePvz);
+            updateModalClose.addEventListener('click', () => {
+                updateModal.style.display = 'none';
+            });
+        }
+
+        init();
+    })();
+</script>
+</body>
+</html>

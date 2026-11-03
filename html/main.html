@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AverungAutomation</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            background: #0c0c0c;
+            color: #e5e5e5;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .card {
+            max-width: 1300px;
+            width: 100%;
+            background: #1a1a1a;
+            border-radius: 24px;
+            padding: 28px 24px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+            backdrop-filter: blur(2px);
+        }
+
+        /* Навигационная панель */
+        .nav {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #2a2a2a;
+            padding-bottom: 8px;
+        }
+        .nav a {
+            color: #888;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 6px 0;
+            transition: color 0.2s;
+        }
+        .nav a:hover {
+            color: #ddd;
+        }
+        .nav a.active {
+            color: #fff;
+            border-bottom: 2px solid #3a7ca5;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 400;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.5px;
+            background: linear-gradient(145deg, #f0f0f0, #b0b0b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-left: 4px solid #3a7ca5;
+            padding-left: 20px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-section {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: #242424;
+            padding: 6px 12px 6px 18px;
+            border-radius: 60px;
+            border: 1px solid #3a3a3a;
+            flex: 2 1 300px;
+        }
+
+        .search-section input {
+            background: transparent;
+            border: none;
+            color: #f0f0f0;
+            font-size: 0.95rem;
+            padding: 8px 0;
+            width: 100%;
+            outline: none;
+        }
+
+        .search-section input::placeholder {
+            color: #777;
+            font-style: italic;
+        }
+
+        .search-section button {
+            background: #2d2d2d;
+            border: none;
+            color: #ccc;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.15s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            border: 1px solid #4b4b4b;
+            white-space: nowrap;
+        }
+
+        .search-section button:hover {
+            background: #3e3e3e;
+            color: white;
+            border-color: #6a6a6a;
+        }
+
+        .btn-primary {
+            background: #1e4f6b;
+            box-shadow: 0 4px 12px #102b38, 0 0 0 1px #3d7e9e inset;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .btn-primary:hover {
+            background: #256f94;
+            box-shadow: 0 6px 14px #143e52, 0 0 0 1px #58a9d0 inset;
+        }
+
+        .btn-secondary {
+            background: #2d2d2d;
+            border: none;
+            color: #ddd;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5), 0 0 0 1px #3d3d3d inset;
+            white-space: nowrap;
+        }
+
+        .btn-secondary:hover {
+            background: #3d3d3d;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.7), 0 0 0 1px #5a5a5a inset;
+            color: #fff;
+        }
+
+        .table-container {
+            border-radius: 20px;
+            background: #141414;
+            overflow-x: auto;
+            border: 1px solid #2b2b2b;
+            margin-bottom: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        th {
+            text-align: left;
+            padding: 18px 16px;
+            background: #1f1f1f;
+            font-weight: 500;
+            color: #aaa;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #333;
+            text-transform: uppercase;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.1s;
+        }
+        th:hover {
+            background: #2a2a2a;
+            color: #ddd;
+        }
+        th.sort-asc::after {
+            content: " ▲";
+            font-size: 0.7rem;
+            margin-left: 6px;
+            opacity: 0.8;
+        }
+        th.sort-desc::after {
+            content: " ▼";
+            font-size: 0.7rem;
+            margin-left: 6px;
+            opacity: 0.8;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #282828;
+            color: #ccc;
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #232323;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: #2a2a2a;
+            border: none;
+            color: #bbb;
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s ease;
+            box-shadow: 0 2px 4px black;
+            border: 1px solid #3e3e3e;
+        }
+
+        .action-btn:hover {
+            background: #3c3c3c;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #6b2c2c;
+            border-color: #a15858;
+            color: white;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #2b4a5f;
+            color: #cce8ff;
+            border-radius: 30px;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin: 2px 4px 2px 0;
+            border: 1px solid #38647a;
+        }
+
+        .badge.online {
+            background: #1f543e;
+            color: #b0ffd0;
+            border-color: #30875c;
+        }
+
+        .badge.offline {
+            background: #4a2e2e;
+            color: #ffbcbc;
+            border-color: #8f4c4c;
+        }
+
+        .footer-message {
+            background: #1e1e1e;
+            border-radius: 40px;
+            padding: 12px 20px;
+            border: 1px solid #363636;
+            font-size: 0.9rem;
+            color: #9a9a9a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .loader {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #3d3d3d;
+            border-top: 2px solid #70b0d0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .status-text {
+            flex: 1;
+        }
+
+        .filter-tag {
+            background: #2b4f5f;
+            color: #c0e0ff;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            border: 1px solid #4387a3;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filter-tag button {
+            background: none;
+            border: none;
+            color: #ffa0a0;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .nav-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <!-- Навигационная панель с добавленной кнопкой конфигурации -->
+    <div class="nav-bar">
+        <a href="/main" class="btn-secondary nav-link">🏠 Главная</a>
+        <a href="/automations" class="btn-secondary nav-link">⚙️ Автоматизации</a>
+        <!-- Новая кнопка для перехода на страницу конфигурации -->
+        <a href="/config" class="btn-secondary nav-link">🛠️ Конфигурация</a>
+    </div>
+
+    <h1>⚡ AverungAutomation · Profile Manager</h1>
+
+    <div class="toolbar">
+        <div class="search-section">
+            <input type="text" id="searchInput" placeholder="Фильтр по имени" autocomplete="off">
+            <button id="searchBtn">🔍 Найти</button>
+            <button id="clearSearchBtn">✕ Сброс</button>
+        </div>
+        <button id="newProfileBtn" class="btn-secondary">➕ Новый</button>
+        <span style="flex:1"></span>
+        <span id="loadingIndicator" style="display: flex; align-items: center; gap:6px; color:#aaa;">
+                <span class="loader" style="display:none;" id="spinner"></span>
+                <span id="actionMessage">ready</span>
+            </span>
+    </div>
+
+    <!-- Активный фильтр -->
+    <div id="filterIndicator" style="margin-bottom: 16px; min-height: 30px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;"></div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th id="sortName">Имя профиля</th>
+                <th id="sortStatus">Статус</th>
+                <th id="sortModified">Изменён</th>
+                <th style="cursor:default;">Действия</th>
+            </tr>
+            </thead>
+            <tbody id="profileTableBody">
+            <tr><td colspan="4" style="text-align:center; padding: 40px; color:#666;">⏳</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-message" id="messageBox">
+        <span class="status-text" id="messageText">Сервер: …</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ---------- config ----------
+        // BASE_URL берётся из адресной строки браузера:
+        // http://localhost:8888/main  -> http://localhost:8888
+        // http://89.248.193.184:8888/main -> http://89.248.193.184:8888
+        const BASE_URL = window.location.origin;
+        const AUTO_REFRESH_INTERVAL = 8000;
+
+        // DOM elements
+        const tbody = document.getElementById('profileTableBody');
+        const newProfileBtn = document.getElementById('newProfileBtn');
+        const spinner = document.getElementById('spinner');
+        const actionMessage = document.getElementById('actionMessage');
+        const messageText = document.getElementById('messageText');
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const clearSearchBtn = document.getElementById('clearSearchBtn');
+        const filterIndicator = document.getElementById('filterIndicator');
+        const sortName = document.getElementById('sortName');
+        const sortStatus = document.getElementById('sortStatus');
+        const sortModified = document.getElementById('sortModified');
+
+        // Состояния
+        let currentQuery = '';
+        let intervalId = null;
+        let searchDebounceTimer = null;
+
+        // Состояние сортировки
+        let sortField = 'name';       // 'name', 'status', 'modified'
+        let sortDirection = 'asc';    // 'asc' или 'desc'
+
+        // --- Функция setLoading ---
+        function setLoading(loading, msg) {
+            spinner.style.display = loading ? 'inline-block' : 'none';
+            if (msg !== undefined) {
+                actionMessage.innerText = msg;
+            }
+        }
+
+        function setMessage(text, isError = false) {
+            messageText.innerText = text;
+            const box = document.getElementById('messageBox');
+            if (isError) {
+                box.style.background = '#2d1a1a';
+                box.style.borderColor = '#a23c3c';
+            } else {
+                box.style.background = '#1e1e1e';
+                box.style.borderColor = '#363636';
+            }
+        }
+
+        function formatDate(dateValue) {
+            if (!dateValue) return '—';
+            const d = new Date(dateValue);
+            if (isNaN(d.getTime())) return '—';
+            const day = d.getDate().toString().padStart(2, '0');
+            const month = (d.getMonth() + 1).toString().padStart(2, '0');
+            const year = d.getFullYear();
+            const hours = d.getHours().toString().padStart(2, '0');
+            const minutes = d.getMinutes().toString().padStart(2, '0');
+            return `${day}:${month}:${year} ${hours}:${minutes}`;
+        }
+
+        function updateIndicators() {
+            let html = '';
+            if (currentQuery) {
+                html += `<span class="filter-tag">🔍 фильтр: “${escapeHtml(currentQuery)}” <button id="removeFilterBtn" title="убрать фильтр">✕</button></span>`;
+            }
+            filterIndicator.innerHTML = html;
+            if (currentQuery) {
+                document.getElementById('removeFilterBtn')?.addEventListener('click', () => {
+                    clearSearch();
+                });
+            }
+        }
+
+        function clearSearch() {
+            clearTimeout(searchDebounceTimer);
+            searchInput.value = '';
+            currentQuery = '';
+            updateIndicators();
+            fetchProfiles();
+        }
+
+        function startAutoRefresh() {
+            if (intervalId) clearInterval(intervalId);
+            intervalId = setInterval(() => {
+                fetchProfiles(currentQuery, true);
+            }, AUTO_REFRESH_INTERVAL);
+        }
+
+        function stopAutoRefresh() {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+        }
+
+        // Функция сортировки массива профилей
+        function sortProfiles(profiles) {
+            if (!profiles) return [];
+            return profiles.sort((a, b) => {
+                let valA, valB;
+                switch (sortField) {
+                    case 'name':
+                        valA = a.name || '';
+                        valB = b.name || '';
+                        break;
+                    case 'status':
+                        // Сортируем по isOnline (true > false), затем по наличию WB
+                        valA = (a.isOnline ? 2 : 1) + (a.isWB ? 0.5 : 0);
+                        valB = (b.isOnline ? 2 : 1) + (b.isWB ? 0.5 : 0);
+                        break;
+                    case 'modified':
+                        valA = a.lastModified ? new Date(a.lastModified).getTime() : 0;
+                        valB = b.lastModified ? new Date(b.lastModified).getTime() : 0;
+                        break;
+                    default: return 0;
+                }
+                if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
+                if (valA > valB) return sortDirection === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        // Обновление классов заголовков для отображения стрелок
+        function updateSortIndicators() {
+            [sortName, sortStatus, sortModified].forEach(th => th.classList.remove('sort-asc', 'sort-desc'));
+            let activeTh;
+            if (sortField === 'name') activeTh = sortName;
+            else if (sortField === 'status') activeTh = sortStatus;
+            else if (sortField === 'modified') activeTh = sortModified;
+            if (activeTh) {
+                activeTh.classList.add(sortDirection === 'asc' ? 'sort-asc' : 'sort-desc');
+            }
+        }
+
+        async function fetchProfiles(query = currentQuery, silent = false) {
+            if (!silent) setLoading(true, 'загрузка...');
+            try {
+                let url = `${BASE_URL}/profile/get_profiles`;
+                if (query) {
+                    url += `?query=${encodeURIComponent(query)}`;
+                }
+                const resp = await fetch(url);
+                if (!resp.ok) {
+                    let errBody = '';
+                    try { errBody = await resp.text(); } catch (_) {}
+                    throw new Error(`HTTP ${resp.status}: ${resp.statusText} — ${errBody}`);
+                }
+                const data = await resp.json();
+                if (!data.status) throw new Error('API вернуло status: false');
+                // Применяем сортировку перед отрисовкой
+                const sorted = sortProfiles(data.profiles || []);
+                renderProfiles(sorted);
+                if (!silent) setMessage(`✅ загружено ${data.profiles.length} профилей` + (query ? ` (фильтр: “${query}”)` : ''));
+            } catch (err) {
+                console.error(err);
+                if (!silent) {
+                    setMessage(`❌ Ошибка: ${err.message}`, true);
+                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color:#b66;">⚠️ не удалось загрузить<br><span style="font-size:0.8rem;">${err.message}</span></td></tr>`;
+                } else {
+                    if (err.message.includes('Failed to fetch')) {
+                        setMessage('Сервер OFFLINE', true);
+                    } else {
+                        // тихое обновление: просто ничего не показываем пользователю
+                    }
+                }
+            } finally {
+                if (!silent) setLoading(false, '');
+            }
+        }
+
+        function renderProfiles(profiles) {
+            if (!profiles || profiles.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color:#666;">📭 нет профилей</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            for (let p of profiles) {
+                const name = p.name || '?';
+                const isOnline = p.isOnline === true;
+                const hasWB = p.isWB === true || !!p.wb_token;
+                const lastMod = p.lastModified ? formatDate(p.lastModified) : '—';
+
+                const statusBadge = isOnline
+                ? '<span class="badge online">● online</span>'
+                : '<span class="badge offline">○ offline</span>';
+
+                const wbIndicator = hasWB
+                ? '<span class="badge" style="background:#3c5a3c;">WB</span>'
+                : '<span class="badge" style="background:#4a3f3f;">no WB</span>';
+
+                html += `<tr>
+                         <td><strong style="color:#fff;">${escapeHtml(name)}</strong></td>
+                         <td>${statusBadge} ${wbIndicator}</td>
+                         <td>${escapeHtml(lastMod)}</td>
+                         <td><div class="profile-actions">
+                            <button class="action-btn open-btn" data-profile="${escapeHtml(name)}">▶ открыть</button>
+                            <button class="action-btn rename-btn" data-profile="${escapeHtml(name)}">✎ переим.</button>
+                            <button class="action-btn delete-btn" data-profile="${escapeHtml(name)}">🗑 удалить</button>
+                        </div></td>
+                     </tr>`;
+            }
+
+            tbody.innerHTML = html;
+
+            document.querySelectorAll('.open-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const profile = btn.getAttribute('data-profile');
+                    openProfile(profile);
+                });
+            });
+            document.querySelectorAll('.rename-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const profile = btn.getAttribute('data-profile');
+                    renameProfile(profile);
+                });
+            });
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const profile = btn.getAttribute('data-profile');
+                    deleteProfile(profile);
+                });
+            });
+        }
+
+        function escapeHtml(unsafe) {
+            if (!unsafe) return unsafe;
+            return unsafe.replace(/[&<>"]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                if (m === '"') return '&quot;';
+                return m;
+            });
+        }
+
+        // ---------- операции с профилями ----------
+        async function deleteProfile(profile) {
+            if (!confirm(`⛔ Удалить профиль "${profile}"?`)) return;
+            setLoading(true, 'удаление...');
+            setMessage(`Удаление ${profile}`);
+            try {
+                const resp = await fetch(`${BASE_URL}/profile/delete_profile?profile=${encodeURIComponent(profile)}`);
+                if (resp.status === 202) {
+                    setMessage(`✅ запрос на удаление принят (202) для ${profile}`);
+                } else {
+                    throw new Error(`HTTP ${resp.status}`);
+                }
+            } catch (err) {
+                setMessage(`❌ ошибка удаления: ${err.message}`, true);
+            } finally {
+                setLoading(false, '');
+                fetchProfiles(currentQuery);
+            }
+        }
+
+        async function openProfile(profile) {
+            setLoading(true, 'открытие...');
+            setMessage(`Открытие ${profile}`);
+            try {
+                const resp = await fetch(`${BASE_URL}/profile/open_profile?profile=${encodeURIComponent(profile)}`);
+                if (resp.status === 202) {
+                    setMessage(`✅ запрос на открытие принят (202)`);
+                } else {
+                    throw new Error(`HTTP ${resp.status}`);
+                }
+            } catch (err) {
+                setMessage(`❌ ошибка открытия: ${err.message}`, true);
+            } finally {
+                setLoading(false, '');
+                fetchProfiles(currentQuery);
+            }
+        }
+
+        async function renameProfile(oldName) {
+            const newName = prompt(`✏️ Переименовать "${oldName}" в:`, oldName);
+            if (!newName || newName === oldName) return;
+            setLoading(true, 'переименование...');
+            setMessage(`Переименование ${oldName} → ${newName}`);
+            try {
+                const url = `${BASE_URL}/profile/rename_profile?old=${encodeURIComponent(oldName)}&new=${encodeURIComponent(newName)}`;
+                const resp = await fetch(url);
+                if (resp.ok) {
+                    const data = await resp.json().catch(() => ({}));
+                    if (data.status === true) {
+                        setMessage(`✅ переименовано`);
+                    } else {
+                        setMessage(`⚠️ статус false`, true);
+                    }
+                } else {
+                    throw new Error(`HTTP ${resp.status}`);
+                }
+            } catch (err) {
+                setMessage(`❌ ошибка переименования: ${err.message}`, true);
+            } finally {
+                setLoading(false, '');
+                fetchProfiles(currentQuery);
+            }
+        }
+
+        async function newProfile() {
+            setLoading(true, 'создание...');
+            setMessage(`Запрос на создание профиля`);
+            try {
+                const resp = await fetch(`${BASE_URL}/profile/new_profile`);
+                if (resp.status === 202) {
+                    setMessage(`✅ создание запущено (202)`);
+                } else {
+                    throw new Error(`HTTP ${resp.status}`);
+                }
+            } catch (err) {
+                setMessage(`❌ ошибка создания: ${err.message}`, true);
+            } finally {
+                setLoading(false, '');
+                fetchProfiles(currentQuery);
+            }
+        }
+
+        // ---------- обработчики UI ----------
+        newProfileBtn.addEventListener('click', newProfile);
+
+        searchBtn.addEventListener('click', () => {
+            clearTimeout(searchDebounceTimer);
+            const query = searchInput.value.trim();
+            currentQuery = query;
+            updateIndicators();
+            fetchProfiles(currentQuery);
+        });
+
+        clearSearchBtn.addEventListener('click', clearSearch);
+
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchDebounceTimer);
+            const query = e.target.value.trim();
+            searchDebounceTimer = setTimeout(() => {
+                currentQuery = query;
+                updateIndicators();
+                fetchProfiles(currentQuery);
+            }, 180);
+        });
+
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                clearTimeout(searchDebounceTimer);
+                searchBtn.click();
+            }
+        });
+
+        // Обработчики сортировки
+        sortName.addEventListener('click', () => {
+            if (sortField === 'name') {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortField = 'name';
+                sortDirection = 'asc';
+            }
+            updateSortIndicators();
+            fetchProfiles(currentQuery);
+        });
+
+        sortStatus.addEventListener('click', () => {
+            if (sortField === 'status') {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortField = 'status';
+                sortDirection = 'asc';
+            }
+            updateSortIndicators();
+            fetchProfiles(currentQuery);
+        });
+
+        sortModified.addEventListener('click', () => {
+            if (sortField === 'modified') {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortField = 'modified';
+                sortDirection = 'asc';
+            }
+            updateSortIndicators();
+            fetchProfiles(currentQuery);
+        });
+
+        // ---------- инициализация ----------
+        messageText.innerText = `Сервер: ${BASE_URL}`;
+        startAutoRefresh();
+        updateIndicators();
+        updateSortIndicators();
+        fetchProfiles();
+
+        window.addEventListener('beforeunload', () => {
+            stopAutoRefresh();
+        });
+    })();
+</script>
+</body>
+</html>

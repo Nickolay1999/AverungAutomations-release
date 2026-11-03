@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление лицензией</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            background: #0c0c0c;
+            color: #e5e5e5;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 16px;
+        }
+
+        .card {
+            max-width: 900px;
+            width: 100%;
+            background: #1a1a1a;
+            border-radius: 24px;
+            padding: 28px 24px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+        }
+
+        /* Навигационная панель */
+        .nav-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #2a2a2a;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 400;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.5px;
+            background: linear-gradient(145deg, #f0f0f0, #b0b0b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-left: 4px solid #3a7ca5;
+            padding-left: 20px;
+        }
+
+        h2 {
+            font-weight: 400;
+            font-size: 1.15rem;
+            margin: 24px 0 14px;
+            color: #aaa;
+            letter-spacing: 0.3px;
+        }
+
+        /* Кнопки */
+        .btn-primary {
+            background: #1e4f6b;
+            box-shadow: 0 4px 12px #102b38, 0 0 0 1px #3d7e9e inset;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .btn-primary:hover {
+            background: #256f94;
+            box-shadow: 0 6px 14px #143e52, 0 0 0 1px #58a9d0 inset;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #2d2d2d;
+            border: none;
+            color: #ddd;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5), 0 0 0 1px #3d3d3d inset;
+            white-space: nowrap;
+        }
+
+        .btn-secondary:hover {
+            background: #3d3d3d;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.7), 0 0 0 1px #5a5a5a inset;
+            color: #fff;
+        }
+
+        .btn-secondary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary.active {
+            background: #3a7ca5;
+            box-shadow: 0 4px 12px #102b38, 0 0 0 1px #58a9d0 inset;
+            color: #fff;
+        }
+
+        /* Блок статуса */
+        .status-card {
+            background: #141414;
+            border: 1px solid #2b2b2b;
+            border-radius: 20px;
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 8px 0 8px;
+        }
+
+        .status-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #555;
+            box-shadow: 0 0 0 4px rgba(85, 85, 85, 0.2);
+            flex-shrink: 0;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+
+        .status-dot.ok {
+            background: #3fbf7f;
+            box-shadow: 0 0 0 4px rgba(63, 191, 127, 0.2);
+        }
+
+        .status-dot.err {
+            background: #c05050;
+            box-shadow: 0 0 0 4px rgba(192, 80, 80, 0.2);
+        }
+
+        .status-dot.wait {
+            background: #d0a040;
+            box-shadow: 0 0 0 4px rgba(208, 160, 64, 0.2);
+        }
+
+        .status-label {
+            color: #888;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .status-value {
+            color: #fff;
+            font-weight: 500;
+            font-size: 1rem;
+            flex: 1;
+        }
+
+        /* Форма */
+        .form-section {
+            background: #141414;
+            border: 1px solid #2b2b2b;
+            border-radius: 20px;
+            padding: 18px 20px;
+            margin-bottom: 8px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #242424;
+            padding: 4px 6px 4px 18px;
+            border-radius: 60px;
+            border: 1px solid #3a3a3a;
+            flex: 1 1 320px;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group:focus-within {
+            border-color: #3a7ca5;
+            box-shadow: 0 0 0 3px rgba(58, 124, 165, 0.2);
+        }
+
+        .form-group label {
+            color: #888;
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .form-group input[type="text"] {
+            background: transparent;
+            border: none;
+            color: #f0f0f0;
+            font-size: 0.95rem;
+            padding: 10px 8px;
+            width: 100%;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .form-group input[type="text"]::placeholder {
+            color: #777;
+            font-style: italic;
+        }
+
+        /* Сообщения */
+        .message {
+            margin-top: 20px;
+            padding: 14px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .message.success {
+            display: flex;
+            background: #1c3328;
+            border: 1px solid #2f7a54;
+            color: #b8f2d0;
+        }
+
+        .message.error {
+            display: flex;
+            background: #2d1a1a;
+            border: 1px solid #a23c3c;
+            color: #ffbcbc;
+        }
+
+        .message.info {
+            display: flex;
+            background: #1e3a5f;
+            border: 1px solid #3a7ca5;
+            color: #c0d8ff;
+        }
+
+        /* Футер */
+        .footer-message {
+            background: #1e1e1e;
+            border-radius: 40px;
+            padding: 12px 20px;
+            border: 1px solid #363636;
+            font-size: 0.9rem;
+            color: #9a9a9a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 24px;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .status-text {
+            flex: 1;
+        }
+
+        .loader {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #3d3d3d;
+            border-top: 2px solid #70b0d0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spacer {
+            flex: 1;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 8px 0 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <!-- Навигационная панель -->
+    <div class="nav-bar">
+        <a href="/main" class="btn-secondary nav-link">🏠 Главная</a>
+        <a href="/automations" class="btn-secondary nav-link">⚙️ Автоматизации</a>
+        <a href="/config" class="btn-secondary nav-link">🛠️ Конфигурация</a>
+        <a href="/license" class="btn-primary nav-link">🔑 Лицензия</a>
+    </div>
+
+    <h1>🔑 Управление лицензией</h1>
+
+    <!-- Статус -->
+    <div class="status-card">
+        <span class="status-dot" id="statusDot"></span>
+        <span class="status-label">Статус:</span>
+        <span class="status-value" id="statusText">неизвестно</span>
+        <span id="statusSpinnerWrap" style="display:flex; align-items:center; gap:6px; color:#aaa;">
+            <span class="loader" style="display:none;" id="statusSpinner"></span>
+        </span>
+    </div>
+
+    <h2>⚡ Активация</h2>
+    <div class="form-section">
+        <form id="activateForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="uuid">UUID:</label>
+                    <input type="text" id="uuid" name="uuid" required placeholder="введите UUID">
+                </div>
+                <button type="submit" class="btn-primary">🚀 Активировать</button>
+            </div>
+        </form>
+    </div>
+
+    <h2>🔍 Проверка</h2>
+    <div class="toolbar">
+        <button id="checkBtn" class="btn-secondary">🔄 Проверить лицензию</button>
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <div class="footer-message" id="footerMessage">
+        <span class="status-text" id="footerText">Сервер: …</span>
+    </div>
+</div>
+
+<script>
+    // ---------- config ----------
+    const BASE_URL = window.location.origin;
+
+    const statusDot = document.getElementById('statusDot');
+    const statusText = document.getElementById('statusText');
+    const statusSpinner = document.getElementById('statusSpinner');
+    const footerText = document.getElementById('footerText');
+    const footerMessage = document.getElementById('footerMessage');
+
+    function showMessage(msg, type) {
+        const msgDiv = document.getElementById('message');
+        msgDiv.textContent = msg;
+        msgDiv.className = 'message ' + (type || 'info');
+    }
+
+    function hideMessage() {
+        const msgDiv = document.getElementById('message');
+        msgDiv.className = 'message';
+        msgDiv.textContent = '';
+    }
+
+    function setStatus(text, kind) {
+        statusText.textContent = text;
+        statusDot.className = 'status-dot' + (kind ? ' ' + kind : '');
+    }
+
+    function setFooter(text, isError = false) {
+        footerText.innerText = text;
+        if (isError) {
+            footerMessage.style.background = '#2d1a1a';
+            footerMessage.style.borderColor = '#a23c3c';
+        } else {
+            footerMessage.style.background = '#1e1e1e';
+            footerMessage.style.borderColor = '#363636';
+        }
+    }
+
+    function setStatusLoading(loading) {
+        statusSpinner.style.display = loading ? 'inline-block' : 'none';
+    }
+
+    // Основная функция проверки статуса (GET /check_license)
+    async function checkLicense() {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+        setStatusLoading(true);
+        try {
+            const response = await fetch(`${BASE_URL}/check_license`, { signal: controller.signal });
+            clearTimeout(timeoutId);
+
+            // Если статус 202 – считаем лицензию активной (сервер подтвердил)
+            if (response.status === 202) {
+                showMessage('✅ Лицензия активна (подтверждено)', 'success');
+                setStatus('активна', 'ok');
+                setFooter('✅ лицензия подтверждена сервером');
+                return true;
+            }
+
+            // Если 200 – пытаемся парсить JSON
+            if (response.ok) {
+                const text = await response.text();
+                try {
+                    const json = JSON.parse(text);
+                    if (json.status === true) {
+                        showMessage('✅ Лицензия активна', 'success');
+                        setStatus('активна', 'ok');
+                        setFooter('✅ лицензия активна');
+                        return true;
+                    } else {
+                        const errMsg = json.msg || 'Неизвестная ошибка';
+                        showMessage('❌ Лицензия не активна: ' + errMsg, 'error');
+                        setStatus('не активна', 'err');
+                        setFooter('❌ лицензия не активна', true);
+                        return false;
+                    }
+                } catch (e) {
+                    // Если тело не JSON, но статус 200 – считаем успехом
+                    showMessage('✅ Лицензия активна (проверка пройдена)', 'success');
+                    setStatus('активна', 'ok');
+                    setFooter('✅ лицензия активна');
+                    return true;
+                }
+            } else {
+                // Иные коды ошибок
+                const text = await response.text();
+                showMessage(`❌ Ошибка проверки (${response.status}): ${text}`, 'error');
+                setStatus('ошибка', 'err');
+                setFooter('❌ ошибка проверки лицензии', true);
+                return false;
+            }
+        } catch (err) {
+            if (err.name === 'AbortError') {
+                showMessage('⏱ Сервер не отвечает на запрос проверки. Попробуйте позже.', 'error');
+                setStatus('недоступен', 'err');
+                setFooter('❌ сервер не отвечает', true);
+            } else {
+                showMessage('❌ Ошибка сети: ' + err.message, 'error');
+                setStatus('ошибка', 'err');
+                setFooter('❌ ошибка сети', true);
+            }
+            return false;
+        } finally {
+            setStatusLoading(false);
+        }
+    }
+
+    // Активация: отправляем UUID и ждём 202, затем через 2 секунды проверяем статус
+    document.getElementById('activateForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const uuid = document.getElementById('uuid').value.trim();
+        if (!uuid) {
+            showMessage('❌ Введите UUID', 'error');
+            return;
+        }
+
+        // Отключаем кнопку, показываем индикатор
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = '⏳ Отправка...';
+        setStatus('ожидание активации', 'wait');
+        hideMessage();
+
+        try {
+            const response = await fetch(`${BASE_URL}/check_license?uuid=${encodeURIComponent(uuid)}`);
+            if (response.status === 202) {
+                showMessage('✅ Запрос на активацию отправлен. Ожидайте подтверждения...', 'info');
+                setStatus('ожидание активации', 'wait');
+                setFooter('⏳ запрос на активацию отправлен');
+                // Через 2 секунды проверяем реальный статус
+                setTimeout(async () => {
+                    await checkLicense();
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '🚀 Активировать';
+                }, 2000);
+            } else {
+                const text = await response.text();
+                showMessage(`❌ Ошибка активации (${response.status}): ${text}`, 'error');
+                setStatus('ошибка', 'err');
+                setFooter('❌ ошибка активации', true);
+                submitBtn.disabled = false;
+                submitBtn.textContent = '🚀 Активировать';
+            }
+        } catch (err) {
+            showMessage('❌ Ошибка сети: ' + err.message, 'error');
+            setStatus('ошибка', 'err');
+            setFooter('❌ ошибка сети', true);
+            submitBtn.disabled = false;
+            submitBtn.textContent = '🚀 Активировать';
+        }
+    });
+
+    // Кнопка проверки (ручной вызов)
+    document.getElementById('checkBtn').addEventListener('click', async () => {
+        const btn = document.getElementById('checkBtn');
+        btn.disabled = true;
+        btn.textContent = '⏳ Проверка...';
+        await checkLicense();
+        btn.disabled = false;
+        btn.textContent = '🔄 Проверить лицензию';
+    });
+
+    // Автоматическая проверка при загрузке страницы
+    window.addEventListener('load', async () => {
+        footerText.innerText = `Сервер: ${BASE_URL}`;
+        await checkLicense();
+    });
+</script>
+</body>
+</html>

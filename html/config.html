@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление конфигом</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            background: #0c0c0c;
+            color: #e5e5e5;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 16px;
+        }
+
+        .card {
+            max-width: 1300px;
+            width: 100%;
+            background: #1a1a1a;
+            border-radius: 24px;
+            padding: 28px 24px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+        }
+
+        /* Навигационная панель */
+        .nav-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #2a2a2a;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 400;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.5px;
+            background: linear-gradient(145deg, #f0f0f0, #b0b0b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-left: 4px solid #3a7ca5;
+            padding-left: 20px;
+        }
+
+        h2 {
+            font-weight: 400;
+            font-size: 1.15rem;
+            margin: 24px 0 14px;
+            color: #aaa;
+            letter-spacing: 0.3px;
+        }
+
+        /* Кнопки */
+        .btn-primary {
+            background: #1e4f6b;
+            box-shadow: 0 4px 12px #102b38, 0 0 0 1px #3d7e9e inset;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .btn-primary:hover {
+            background: #256f94;
+            box-shadow: 0 6px 14px #143e52, 0 0 0 1px #58a9d0 inset;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #2d2d2d;
+            border: none;
+            color: #ddd;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5), 0 0 0 1px #3d3d3d inset;
+            white-space: nowrap;
+        }
+
+        .btn-secondary:hover {
+            background: #3d3d3d;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.7), 0 0 0 1px #5a5a5a inset;
+            color: #fff;
+        }
+
+        .btn-secondary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary.active {
+            background: #3a7ca5;
+            box-shadow: 0 4px 12px #102b38, 0 0 0 1px #58a9d0 inset;
+            color: #fff;
+        }
+
+        /* Тулбар */
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Форма */
+        .form-section {
+            background: #141414;
+            border: 1px solid #2b2b2b;
+            border-radius: 20px;
+            padding: 18px 20px;
+            margin-bottom: 8px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #242424;
+            padding: 4px 6px 4px 18px;
+            border-radius: 60px;
+            border: 1px solid #3a3a3a;
+            flex: 1 1 240px;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group:focus-within {
+            border-color: #3a7ca5;
+            box-shadow: 0 0 0 3px rgba(58, 124, 165, 0.2);
+        }
+
+        .form-group label {
+            color: #888;
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .form-group input[type="text"] {
+            background: transparent;
+            border: none;
+            color: #f0f0f0;
+            font-size: 0.95rem;
+            padding: 10px 8px;
+            width: 100%;
+            outline: none;
+        }
+
+        .form-group input[type="text"]::placeholder {
+            color: #777;
+            font-style: italic;
+        }
+
+        /* Чекбокс */
+        .checkbox-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #ccc;
+            cursor: pointer;
+            user-select: none;
+            font-size: 0.9rem;
+            padding: 10px 18px;
+            background: #242424;
+            border-radius: 40px;
+            border: 1px solid #3a3a3a;
+            transition: border 0.15s ease;
+        }
+
+        .checkbox-label:hover {
+            border-color: #5a5a5a;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #3a7ca5;
+            cursor: pointer;
+        }
+
+        /* Таблица */
+        .table-container {
+            border-radius: 20px;
+            background: #141414;
+            overflow-x: auto;
+            border: 1px solid #2b2b2b;
+            margin-bottom: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th {
+            text-align: left;
+            padding: 18px 16px;
+            background: #1f1f1f;
+            font-weight: 500;
+            color: #aaa;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #333;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #282828;
+            color: #ccc;
+            font-size: 0.95rem;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #1d1d1d;
+        }
+
+        td.key-cell {
+            color: #fff;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .value-cell {
+            max-width: 500px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            color: #ddd;
+        }
+
+        .value-cell:hover {
+            background: #2a2a2a;
+            color: #fff;
+        }
+
+        .value-cell::after {
+            content: ' ✎';
+            opacity: 0;
+            font-size: 0.75rem;
+            color: #58a9d0;
+            transition: opacity 0.15s;
+            margin-left: 4px;
+        }
+
+        .value-cell:hover::after {
+            opacity: 1;
+        }
+
+        .actions-cell {
+            width: 120px;
+            text-align: right;
+        }
+
+        .action-btn {
+            background: #2a2a2a;
+            border: none;
+            color: #bbb;
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s ease;
+            box-shadow: 0 2px 4px black;
+            border: 1px solid #3e3e3e;
+        }
+
+        .action-btn:hover {
+            background: #3c3c3c;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #6b2c2c;
+            border-color: #a15858;
+            color: white;
+        }
+
+        /* Инлайн-редактирование */
+        .edit-input {
+            background: #1a1b2e;
+            border: 2px solid #3a7ca5;
+            border-radius: 8px;
+            padding: 6px 10px;
+            color: #fff;
+            font-size: 0.95rem;
+            width: 100%;
+            box-sizing: border-box;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(58, 124, 165, 0.25);
+        }
+
+        /* Сообщения */
+        .error {
+            margin-bottom: 16px;
+            padding: 12px 20px;
+            background: #2d1a1a;
+            border-radius: 20px;
+            border: 1px solid #a23c3c;
+            color: #ffbcbc;
+            font-size: 0.9rem;
+            display: none;
+            white-space: pre-line;
+        }
+
+        .info {
+            margin-bottom: 16px;
+            padding: 12px 20px;
+            background: #1e3a5f;
+            border-radius: 20px;
+            border: 1px solid #3a7ca5;
+            color: #c0d8ff;
+            font-size: 0.9rem;
+            white-space: pre-line;
+            display: none;
+        }
+
+        /* Футер */
+        .footer-message {
+            background: #1e1e1e;
+            border-radius: 40px;
+            padding: 12px 20px;
+            border: 1px solid #363636;
+            font-size: 0.9rem;
+            color: #9a9a9a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .loader {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #3d3d3d;
+            border-top: 2px solid #70b0d0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-text {
+            flex: 1;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .empty-state .big {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <!-- Навигационная панель -->
+    <div class="nav-bar">
+        <a href="/main" class="btn-secondary nav-link">🏠 Главная</a>
+        <a href="/automations" class="btn-secondary nav-link">⚙️ Автоматизации</a>
+        <a href="/config" class="btn-primary nav-link">🛠️ Конфигурация</a>
+    </div>
+
+    <h1>⚙️ Конфигурация</h1>
+
+    <h2>➕ Добавить / Обновить параметр</h2>
+    <div class="form-section">
+        <form id="configForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="key">Ключ:</label>
+                    <input type="text" id="key" name="key" required placeholder="например: theme">
+                </div>
+                <div class="form-group">
+                    <label for="value">Значение:</label>
+                    <input type="text" id="value" name="value" required placeholder="например: dark">
+                </div>
+                <button type="submit" class="btn-primary">💾 Сохранить</button>
+            </div>
+        </form>
+    </div>
+
+    <h2>📋 Текущие параметры</h2>
+
+    <!-- Панель импорта/экспорта -->
+    <div class="toolbar">
+        <button type="button" id="exportBtn" class="btn-secondary">📤 Экспорт в JSON</button>
+        <button type="button" id="importBtn" class="btn-secondary">📥 Импорт из JSON</button>
+        <input type="file" id="importFile" accept=".json,application/json" hidden>
+        <label class="checkbox-label" title="Удалить ключи, которых нет в импортируемом файле">
+            <input type="checkbox" id="replaceAll"> Заменить полностью
+        </label>
+        <span style="flex:1"></span>
+        <span id="statusIndicator" style="display:flex; align-items:center; gap:6px; color:#aaa;">
+            <span class="loader" style="display:none;" id="spinner"></span>
+            <span id="actionMessage">ready</span>
+        </span>
+    </div>
+
+    <div id="info" class="info"></div>
+    <div id="error" class="error"></div>
+
+    <div class="table-container">
+        <table id="configTable">
+            <thead>
+            <tr>
+                <th>Ключ</th>
+                <th>Значение</th>
+                <th class="actions-cell">Действия</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div class="footer-message" id="footerMessage">
+        <span class="status-text" id="footerText">Сервер: …</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ---------- config ----------
+        const BASE_URL = window.location.origin;
+
+        const spinner = document.getElementById('spinner');
+        const actionMessage = document.getElementById('actionMessage');
+        const footerText = document.getElementById('footerText');
+        const footerMessage = document.getElementById('footerMessage');
+
+        // --- статус загрузки / футер ---
+        function setLoading(loading, msg) {
+            spinner.style.display = loading ? 'inline-block' : 'none';
+            if (msg !== undefined) actionMessage.innerText = msg;
+        }
+
+        function setFooter(text, isError = false) {
+            footerText.innerText = text;
+            if (isError) {
+                footerMessage.style.background = '#2d1a1a';
+                footerMessage.style.borderColor = '#a23c3c';
+            } else {
+                footerMessage.style.background = '#1e1e1e';
+                footerMessage.style.borderColor = '#363636';
+            }
+        }
+
+        function showError(msg) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = msg;
+            errorDiv.style.display = 'block';
+        }
+
+        function hideError() {
+            document.getElementById('error').style.display = 'none';
+        }
+
+        function showInfo(msg) {
+            const info = document.getElementById('info');
+            info.textContent = msg;
+            info.style.display = 'block';
+        }
+
+        function hideInfo() {
+            document.getElementById('info').style.display = 'none';
+        }
+
+        // ---------- низкоуровневые API-хелперы ----------
+        async function apiPutConfig(key, value) {
+            const url = `${BASE_URL}/config/put_config?key=${encodeURIComponent(key)}&value=${encodeURIComponent(value)}`;
+            try {
+                const response = await fetch(url, { method: 'POST' });
+                if (!response.ok) return { ok: false, msg: `HTTP ${response.status}` };
+                const result = await response.json();
+                return result.status === true
+                ? { ok: true }
+                : { ok: false, msg: result.msg || 'Неизвестная ошибка' };
+            } catch (err) {
+                return { ok: false, msg: err.message };
+            }
+        }
+
+        async function apiDeleteConfig(key) {
+            const url = `${BASE_URL}/config/delete_config?key=${encodeURIComponent(key)}`;
+            try {
+                const response = await fetch(url, { method: 'POST' });
+                if (!response.ok) return { ok: false, msg: `HTTP ${response.status}` };
+                const result = await response.json();
+                return result.status === true
+                ? { ok: true }
+                : { ok: false, msg: result.msg || 'Неизвестная ошибка' };
+            } catch (err) {
+                return { ok: false, msg: err.message };
+            }
+        }
+
+        // ---------- загрузка/отрисовка ----------
+        async function loadConfig() {
+            setLoading(true, 'загрузка...');
+            try {
+                const response = await fetch(`${BASE_URL}/config/get_config`);
+                if (!response.ok) throw new Error('Ошибка загрузки');
+                const data = await response.json();
+                const config = data.config || {};
+                renderConfig(config);
+                hideError();
+                setFooter(`✅ загружено ${Object.keys(config).length} параметров`);
+            } catch (err) {
+                showError('Не удалось загрузить конфиг: ' + err.message);
+                setFooter('Сервер OFFLINE', true);
+            } finally {
+                setLoading(false, '');
+            }
+        }
+
+        function renderConfig(config) {
+            const tbody = document.querySelector('#configTable tbody');
+            tbody.innerHTML = '';
+
+            const keys = Object.keys(config);
+            if (keys.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" class="empty-state">'
+                + '<span class="big">📭</span>'
+                + 'Нет параметров. Добавьте первый выше.</td></tr>';
+                return;
+            }
+
+            for (const [key, value] of Object.entries(config)) {
+                const row = tbody.insertRow();
+                row.dataset.key = key;
+
+                const keyCell = row.insertCell();
+                keyCell.className = 'key-cell';
+                keyCell.textContent = key;
+
+                const valueCell = row.insertCell();
+                valueCell.className = 'value-cell';
+                valueCell.textContent = value;
+                valueCell.title = `${value}  (клик — изменить)`;
+
+                const actionCell = row.insertCell();
+                actionCell.className = 'actions-cell';
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'action-btn delete-btn';
+                deleteBtn.textContent = '🗑 удалить';
+                deleteBtn.setAttribute('aria-label', 'Удалить параметр');
+                deleteBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    deleteKey(key);
+                };
+                actionCell.appendChild(deleteBtn);
+            }
+        }
+
+        // ---------- изменение/удаление одного ключа ----------
+        async function deleteKey(key) {
+            if (!confirm(`⛔ Удалить параметр "${key}"?`)) return;
+            setLoading(true, 'удаление...');
+            const r = await apiDeleteConfig(key);
+            if (r.ok) {
+                await loadConfig();
+                hideError();
+                setFooter(`✅ параметр "${key}" удалён`);
+            } else {
+                showError('Ошибка при удалении: ' + r.msg);
+                setFooter('❌ ошибка удаления', true);
+            }
+            setLoading(false, '');
+        }
+
+        async function updateConfig(key, newValue) {
+            const r = await apiPutConfig(key, newValue);
+            if (!r.ok) showError('Ошибка при обновлении: ' + r.msg);
+            return r.ok;
+        }
+
+        function startEdit(cell) {
+            if (cell.querySelector('input')) return;
+
+            const originalValue = cell.textContent;
+            const key = cell.parentElement.dataset.key;
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'edit-input';
+            input.value = originalValue;
+
+            cell.textContent = '';
+            cell.appendChild(input);
+            input.focus();
+            input.select();
+
+            input.addEventListener('blur', () => finishEdit(cell, input, originalValue, key));
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    input.blur();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    cell.textContent = originalValue;
+                    cell.title = `${originalValue}  (клик — изменить)`;
+                }
+            });
+        }
+
+        async function finishEdit(cell, input, originalValue, key) {
+            const newValue = input.value.trim();
+
+            if (newValue === originalValue) {
+                cell.textContent = originalValue;
+                cell.title = `${originalValue}  (клик — изменить)`;
+                return;
+            }
+
+            setLoading(true, 'сохранение...');
+            const success = await updateConfig(key, newValue);
+            setLoading(false, '');
+            if (success) {
+                cell.textContent = newValue;
+                cell.title = `${newValue}  (клик — изменить)`;
+                hideError();
+                setFooter(`✅ параметр "${key}" обновлён`);
+            } else {
+                cell.textContent = originalValue;
+                cell.title = `${originalValue}  (клик — изменить)`;
+                setFooter('❌ ошибка обновления', true);
+            }
+        }
+
+        // Делегирование кликов для запуска редактирования
+        document.querySelector('#configTable tbody').addEventListener('click', (e) => {
+            const target = e.target.closest('.value-cell');
+            if (target && !target.querySelector('input')) {
+                startEdit(target);
+            }
+        });
+
+        // ---------- форма "добавить/обновить" ----------
+        document.getElementById('configForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const key = document.getElementById('key').value.trim();
+            const value = document.getElementById('value').value.trim();
+            if (!key || !value) return;
+
+            setLoading(true, 'сохранение...');
+            const r = await apiPutConfig(key, value);
+            setLoading(false, '');
+            if (r.ok) {
+                await loadConfig();
+                document.getElementById('configForm').reset();
+                hideError();
+                setFooter(`✅ параметр "${key}" сохранён`);
+            } else {
+                showError('Ошибка: ' + r.msg);
+                setFooter('❌ ошибка сохранения', true);
+            }
+        });
+
+        // ---------- экспорт ----------
+        async function exportConfig() {
+            const exportBtn = document.getElementById('exportBtn');
+            exportBtn.disabled = true;
+            setLoading(true, 'экспорт...');
+            try {
+                const response = await fetch(`${BASE_URL}/config/get_config`);
+                if (!response.ok) throw new Error('Ошибка загрузки');
+                const data = await response.json();
+                const config = data.config || {};
+
+                const json = JSON.stringify(config, null, 2);
+                const blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+                a.href = url;
+                a.download = `config-${ts}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showInfo(`Экспортировано ${Object.keys(config).length} параметров.`);
+                setFooter(`✅ экспортировано ${Object.keys(config).length} параметров`);
+                setTimeout(hideInfo, 4000);
+            } catch (err) {
+                showError('Ошибка экспорта: ' + err.message);
+                setFooter('❌ ошибка экспорта', true);
+            } finally {
+                exportBtn.disabled = false;
+                setLoading(false, '');
+            }
+        }
+
+        // ---------- импорт ----------
+        async function importConfig(file) {
+            const importBtn = document.getElementById('importBtn');
+            const exportBtn = document.getElementById('exportBtn');
+            importBtn.disabled = true;
+            exportBtn.disabled = true;
+
+            try {
+                hideError();
+                showInfo(`Чтение файла «${file.name}»...`);
+
+                // 1) читаем и парсим
+                let text;
+                try {
+                    text = await file.text();
+                } catch (err) {
+                    throw new Error('не удалось прочитать файл: ' + err.message);
+                }
+
+                let parsed;
+                try {
+                    parsed = JSON.parse(text);
+                } catch (err) {
+                    throw new Error('некорректный JSON: ' + err.message);
+                }
+
+                if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+                    throw new Error('ожидается JSON-объект вида { "ключ": "значение" }');
+                }
+
+                // нестроковые значения (числа/объекты) преобразуем в строки
+                const entries = Object.entries(parsed).map(([k, v]) => [
+                    String(k),
+                    typeof v === 'string' ? v : JSON.stringify(v)
+                ]);
+
+                if (entries.length === 0) {
+                    throw new Error('файл не содержит параметров');
+                }
+
+                const replaceAll = document.getElementById('replaceAll').checked;
+
+                // 2) если "заменить полностью" — найдём ключи к удалению
+                let deleteKeys = [];
+                if (replaceAll) {
+                    const resp = await fetch(`${BASE_URL}/config/get_config`);
+                    if (!resp.ok) throw new Error('не удалось получить текущий конфиг');
+                    const cur = await resp.json();
+                    const existing = Object.keys(cur.config || {});
+                    const imported = new Set(entries.map(([k]) => k));
+                    deleteKeys = existing.filter(k => !imported.has(k));
+
+                    if (deleteKeys.length > 0 &&
+                    !confirm(`Будут удалены ${deleteKeys.length} ключей, отсутствующих в файле.\nПродолжить?`)) {
+                        hideInfo();
+                        return;
+                    }
+                }
+
+                // 3) последовательно пишем все параметры
+                const failures = [];
+                let processed = 0;
+
+                setLoading(true, 'импорт...');
+                for (const [k, v] of entries) {
+                    const r = await apiPutConfig(k, v);
+                    if (!r.ok) failures.push(`put "${k}": ${r.msg}`);
+                    processed++;
+                    setLoading(true, `импорт: ${processed} / ${entries.length}`);
+                    showInfo(`Импорт: ${processed} / ${entries.length}...`);
+                }
+                setLoading(false, '');
+
+                // 4) при замене — удаляем лишние ключи
+                let deleted = 0;
+                for (const k of deleteKeys) {
+                    const r = await apiDeleteConfig(k);
+                    if (r.ok) deleted++;
+                    else failures.push(`delete "${k}": ${r.msg}`);
+                }
+
+                // 5) обновляем таблицу
+                await loadConfig();
+
+                if (failures.length) {
+                    showError(
+                        `Импорт завершён с ошибками (${failures.length} из ${entries.length + deleteKeys.length}):\n` +
+                        failures.slice(0, 15).join('\n') +
+                        (failures.length > 15 ? `\n… ещё ${failures.length - 15}` : '')
+                    );
+                    setFooter(`⚠️ импорт с ошибками: ${failures.length}`, true);
+                } else {
+                    showInfo(
+                        `Импортировано: ${entries.length}` +
+                        (deleted ? `, удалено: ${deleted}` : '') +
+                        '.'
+                    );
+                    setFooter(`✅ импортировано ${entries.length}` + (deleted ? `, удалено ${deleted}` : ''));
+                    setTimeout(hideInfo, 5000);
+                }
+            } catch (err) {
+                showError('Ошибка импорта: ' + err.message);
+                hideInfo();
+                setFooter('❌ ошибка импорта', true);
+            } finally {
+                importBtn.disabled = false;
+                exportBtn.disabled = false;
+                setLoading(false, '');
+            }
+        }
+
+        // ---------- инициализация кнопок импорта/экспорта ----------
+        document.getElementById('exportBtn').addEventListener('click', exportConfig);
+        document.getElementById('importBtn').addEventListener('click', () => {
+            document.getElementById('importFile').click();
+        });
+        document.getElementById('importFile').addEventListener('change', async (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            await importConfig(file);
+            // сбрасываем value, чтобы можно было выбрать тот же файл повторно
+            e.target.value = '';
+        });
+
+        window.addEventListener('load', () => {
+            footerText.innerText = `Сервер: ${BASE_URL}`;
+            loadConfig();
+        });
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AverungAutomation · Feedback TZ</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+
+        body {
+            background: #0c0c0c;
+            color: #e5e5e5;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        /* Скрываем колонку "Отмененный", если сервер сообщил, что Canceled = "0" */
+        body[data-hide-canceled="true"] .col-canceled {
+            display: none !important;
+        }
+
+        .card {
+            max-width: 1400px;
+            width: 100%;
+            background: #1a1a1a;
+            border-radius: 24px;
+            padding: 28px 24px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+            backdrop-filter: blur(2px);
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 400;
+            margin: 0 0 20px 0;
+            letter-spacing: -0.5px;
+            background: linear-gradient(145deg, #f0f0f0, #b0b0b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-left: 4px solid #3a7ca5;
+            padding-left: 20px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .paste-section {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: #242424;
+            padding: 6px 12px 6px 18px;
+            border-radius: 60px;
+            border: 1px solid #3a3a3a;
+            flex: 3 1 400px;
+        }
+
+        .paste-section textarea {
+            background: transparent;
+            border: none;
+            color: #f0f0f0;
+            font-size: 0.95rem;
+            padding: 8px 0;
+            width: 100%;
+            outline: none;
+            resize: vertical;
+            min-height: 40px;
+            max-height: 120px;
+            font-family: inherit;
+        }
+
+        .paste-section textarea::placeholder {
+            color: #777;
+            font-style: italic;
+        }
+
+        .btn-primary {
+            background: #1e4f6b;
+            box-shadow: 0 4px 12px #102b38, 0 0 0 1px #3d7e9e inset;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .btn-primary:hover {
+            background: #256f94;
+            box-shadow: 0 6px 14px #143e52, 0 0 0 1px #58a9d0 inset;
+        }
+
+        .btn-secondary {
+            background: #2d2d2d;
+            border: none;
+            color: #ddd;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5), 0 0 0 1px #3d3d3d inset;
+            white-space: nowrap;
+        }
+
+        .btn-secondary:hover {
+            background: #3d3d3d;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.7), 0 0 0 1px #5a5a5a inset;
+            color: #fff;
+        }
+
+        .btn-success {
+            background: #1f6e4a;
+            box-shadow: 0 4px 12px #0f3a28, 0 0 0 1px #3a9b6a inset;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #2a8e5c;
+        }
+        .btn-danger {
+            background: #8b2e2e;
+            box-shadow: 0 4px 12px #441818, 0 0 0 1px #c04a4a inset;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #b33d3d;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .table-container {
+            border-radius: 20px;
+            background: #141414;
+            overflow-x: auto;
+            border: 1px solid #2b2b2b;
+            margin-bottom: 24px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1650px;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px 8px;
+            background: #1f1f1f;
+            font-weight: 500;
+            color: #aaa;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #333;
+            text-transform: uppercase;
+            position: sticky;
+            top: 0;
+            background: #1f1f1f;
+            z-index: 10;
+        }
+
+        td {
+            padding: 8px;
+            border-bottom: 1px solid #282828;
+            color: #ccc;
+            font-size: 0.9rem;
+            background: #1a1a1a;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #232323;
+        }
+
+        td[contenteditable="true"] {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            cursor: text;
+            background: #202020;
+            outline: 1px dashed #4a4a4a;
+        }
+
+        td[contenteditable="true"]:focus {
+            white-space: normal;
+            overflow: visible;
+            outline: 2px solid #3a7ca5;
+            background: #2a2a2a;
+        }
+
+        td.rating-cell {
+            max-width: 60px;
+        }
+
+        .actions-cell {
+            white-space: nowrap;
+            width: 60px;
+        }
+
+        .action-btn {
+            background: #2a2a2a;
+            border: none;
+            color: #bbb;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s ease;
+            box-shadow: 0 2px 4px black;
+            border: 1px solid #3e3e3e;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .action-btn:hover {
+            background: #3c3c3c;
+            color: white;
+        }
+
+        .footer-message {
+            background: #1e1e1e;
+            border-radius: 40px;
+            padding: 12px 20px;
+            border: 1px solid #363636;
+            font-size: 0.9rem;
+            color: #9a9a9a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .loader {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #3d3d3d;
+            border-top: 2px solid #70b0d0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .status-text {
+            flex: 1;
+        }
+
+        .num-col {
+            width: 40px;
+            text-align: center;
+            color: #888;
+        }
+
+        .toolbar-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: #2a2a2a;
+            color: #aaa;
+        }
+        .status-badge.active {
+            background: #1e4f6b;
+            color: #fff;
+        }
+    </style>
+</head>
+<body data-hide-canceled="__SSA_HIDE_CANCELED__">
+<div class="card">
+    <div class="nav-bar">
+        <a href="/main" class="btn-secondary nav-link">🏠 Главная</a>
+        <a href="/automations" class="btn-secondary nav-link">⚙️ Автоматизации</a>
+    </div>
+
+    <h1>📋 AverungAutomation · Feedback TZ</h1>
+
+    <div class="toolbar">
+        <!-- Панель инструментов для режима редактирования (нет данных) -->
+        <div id="editToolbar" class="toolbar-group">
+            <div class="paste-section">
+                <textarea id="pasteInput" placeholder="Вставьте скопированные строки (из Google Sheets) ..."></textarea>
+            </div>
+            <button id="addRowBtn" class="btn-secondary">➕ Добавить строку</button>
+            <button id="saveTableBtn" class="btn-primary">💾 Сохранить таблицу</button>
+            <button id="uploadFilesBtn" class="btn-secondary">📎 Загрузить файлы</button>
+            <button id="clearTableBtn" class="btn-secondary">🗑 Очистить</button>
+        </div>
+
+        <!-- Панель инструментов для режима просмотра (есть данные) -->
+        <div id="viewToolbar" class="toolbar-group hidden">
+            <button id="startActionBtn" class="btn-success">▶ Запустить</button>
+            <button id="stopActionBtn" class="btn-danger">⏹ Остановить</button>
+            <button id="clearTableViewBtn" class="btn-secondary">🗑 Очистить таблицу</button>
+            <span style="color:#aaa;">(Режим просмотра)</span>
+        </div>
+
+        <span style="flex:1"></span>
+        <span id="loadingIndicator" style="display: flex; align-items: center; gap:6px; color:#aaa;">
+            <span class="loader" style="display:none;" id="spinner"></span>
+            <span id="actionMessage"></span>
+        </span>
+    </div>
+
+    <input type="file" id="fileInput" class="file-input" multiple accept="image/*,video/*">
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>№</th>
+                <th>Артикул</th>
+                <th>Аккаунт</th>
+                <th>Рейтинг</th>
+                <th>Текст</th>
+                <th>Позитивный текст</th>
+                <th>Негативный текст</th>
+                <th>Фото</th>
+                <th>Видео</th>
+                <th class="col-canceled">Отмененный</th>
+                <th>Статус</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody id="tableBody">
+            <!-- Строки будут добавляться динамически -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-message" id="messageBox">
+        <span class="status-text" id="messageText">Сервер: …</span>
+        <button id="clearMsgBtn" class="clear-btn action-btn">✕ очистить</button>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // BASE_URL берётся из адресной строки браузера:
+        const BASE_URL = window.location.origin;
+
+        // DOM элементы
+        const tbody = document.getElementById('tableBody');
+        const pasteInput = document.getElementById('pasteInput');
+        const addRowBtn = document.getElementById('addRowBtn');
+        const saveTableBtn = document.getElementById('saveTableBtn');
+        const uploadFilesBtn = document.getElementById('uploadFilesBtn');
+        const clearTableBtn = document.getElementById('clearTableBtn');
+        const fileInput = document.getElementById('fileInput');
+        const spinner = document.getElementById('spinner');
+        const actionMessage = document.getElementById('actionMessage');
+        const messageText = document.getElementById('messageText');
+        const clearMsgBtn = document.getElementById('clearMsgBtn');
+
+        // Элементы панелей
+        const editToolbar = document.getElementById('editToolbar');
+        const viewToolbar = document.getElementById('viewToolbar');
+        const startActionBtn = document.getElementById('startActionBtn');
+        const stopActionBtn = document.getElementById('stopActionBtn');
+        const clearTableViewBtn = document.getElementById('clearTableViewBtn');
+
+        // Состояние
+        let rowCounter = 0;
+        let isViewMode = false; // Режим просмотра (данные с сервера)
+
+        // --- Утилиты ---
+        function setLoading(loading, msg) {
+            spinner.style.display = loading ? 'inline-block' : 'none';
+            if (msg !== undefined) actionMessage.innerText = msg;
+        }
+
+        function setMessage(text, isError = false) {
+            messageText.innerText = text;
+            const box = document.getElementById('messageBox');
+            if (isError) {
+                box.style.background = '#2d1a1a';
+                box.style.borderColor = '#a23c3c';
+            } else {
+                box.style.background = '#1e1e1e';
+                box.style.borderColor = '#363636';
+            }
+        }
+
+        function escapeHtml(unsafe) {
+            if (!unsafe) return unsafe;
+            return unsafe.replace(/[&<>"]/g, m => {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                if (m === '"') return '&quot;';
+                return m;
+            });
+        }
+
+        // Переключение режимов отображения
+        function setViewMode(enabled) {
+            isViewMode = enabled;
+            if (enabled) {
+                editToolbar.classList.add('hidden');
+                viewToolbar.classList.remove('hidden');
+            } else {
+                editToolbar.classList.remove('hidden');
+                viewToolbar.classList.add('hidden');
+            }
+        }
+
+        // Создаёт строку таблицы в режиме редактирования (с редактируемыми ячейками)
+        function createEditRow(data = null) {
+            const tr = document.createElement('tr');
+            const num = ++rowCounter;
+
+            // №
+            const tdNum = document.createElement('td');
+            tdNum.className = 'num-col';
+            tdNum.textContent = num;
+            tr.appendChild(tdNum);
+
+            // Артикул
+            const tdArt = document.createElement('td');
+            tdArt.setAttribute('contenteditable', 'true');
+            tdArt.textContent = data?.article || '';
+            tr.appendChild(tdArt);
+
+            // Аккаунт
+            const tdAccount = document.createElement('td');
+            tdAccount.setAttribute('contenteditable', 'true');
+            tdAccount.textContent = data?.account || '';
+            tr.appendChild(tdAccount);
+
+            // Рейтинг
+            const tdRating = document.createElement('td');
+            tdRating.setAttribute('contenteditable', 'true');
+            tdRating.className = 'rating-cell';
+            tdRating.textContent = data?.rating || '';
+            tr.appendChild(tdRating);
+
+            // Текст
+            const tdText = document.createElement('td');
+            tdText.setAttribute('contenteditable', 'true');
+            tdText.textContent = data?.text || '';
+            tr.appendChild(tdText);
+
+            // Позитивный текст
+            const tdPos = document.createElement('td');
+            tdPos.setAttribute('contenteditable', 'true');
+            tdPos.textContent = data?.positive_text || '';
+            tr.appendChild(tdPos);
+
+            // Негативный текст
+            const tdNeg = document.createElement('td');
+            tdNeg.setAttribute('contenteditable', 'true');
+            tdNeg.textContent = data?.negative_text || '';
+            tr.appendChild(tdNeg);
+
+            // Фото
+            const tdPhoto = document.createElement('td');
+            tdPhoto.setAttribute('contenteditable', 'true');
+            tdPhoto.textContent = data?.photo || '';
+            tr.appendChild(tdPhoto);
+
+            // Видео
+            const tdVideo = document.createElement('td');
+            tdVideo.setAttribute('contenteditable', 'true');
+            tdVideo.textContent = data?.video || '';
+            tr.appendChild(tdVideo);
+
+            // Отмененный (новый столбец)
+            const tdCancelled = document.createElement('td');
+            tdCancelled.classList.add('col-canceled');
+            tdCancelled.setAttribute('contenteditable', 'true');
+            // Если data.isCancelled === true, показываем "Отменен", иначе пусто
+            tdCancelled.textContent = (data?.isCancelled === true) ? 'Отменен' : '';
+            tr.appendChild(tdCancelled);
+
+            // Статус (пустой в режиме редактирования)
+            const tdStatus = document.createElement('td');
+            tdStatus.textContent = '';
+            tr.appendChild(tdStatus);
+
+            // Действия (кнопка удалить)
+            const tdActions = document.createElement('td');
+            tdActions.className = 'actions-cell';
+            const delBtn = document.createElement('button');
+            delBtn.className = 'action-btn';
+            delBtn.textContent = '✕';
+            delBtn.title = 'Удалить строку';
+            delBtn.addEventListener('click', () => {
+                tr.remove();
+                renumberRows();
+            });
+            tdActions.appendChild(delBtn);
+            tr.appendChild(tdActions);
+
+            return tr;
+        }
+
+        // Создаёт строку таблицы в режиме просмотра (из данных сервера)
+        function createViewRow(item) {
+            const tr = document.createElement('tr');
+            // № (используем nn или порядковый номер)
+            const tdNum = document.createElement('td');
+            tdNum.className = 'num-col';
+            tdNum.textContent = item.nn || rowCounter + 1;
+            tr.appendChild(tdNum);
+
+            // Артикул
+            const tdArt = document.createElement('td');
+            tdArt.textContent = item.article || '';
+            tr.appendChild(tdArt);
+
+            // Аккаунт
+            const tdAccount = document.createElement('td');
+            tdAccount.textContent = item.account || '';
+            tr.appendChild(tdAccount);
+
+            // Рейтинг
+            const tdRating = document.createElement('td');
+            tdRating.textContent = item.rating || '';
+            tr.appendChild(tdRating);
+
+            // Текст
+            const tdText = document.createElement('td');
+            tdText.textContent = item.text || '';
+            tr.appendChild(tdText);
+
+            // Позитивный текст
+            const tdPos = document.createElement('td');
+            tdPos.textContent = item.pos_text || '';
+            tr.appendChild(tdPos);
+
+            // Негативный текст
+            const tdNeg = document.createElement('td');
+            tdNeg.textContent = item.neg_text || '';
+            tr.appendChild(tdNeg);
+
+            // Фото
+            const tdPhoto = document.createElement('td');
+            tdPhoto.textContent = item.photo || '';
+            tr.appendChild(tdPhoto);
+
+            // Видео
+            const tdVideo = document.createElement('td');
+            tdVideo.textContent = item.videos || '';
+            tr.appendChild(tdVideo);
+
+            // Отмененный (новый столбец)
+            const tdCancelled = document.createElement('td');
+            tdCancelled.classList.add('col-canceled');
+            tdCancelled.textContent = item.isCancelled ? 'Отменен' : '';
+            tr.appendChild(tdCancelled);
+
+            // Статус
+            const tdStatus = document.createElement('td');
+            tdStatus.textContent = item.status || '';
+            tr.appendChild(tdStatus);
+
+            // Действия (пустая ячейка, можно добавить что-то позже)
+            const tdActions = document.createElement('td');
+            tdActions.className = 'actions-cell';
+            // В режиме просмотра действий нет
+            tr.appendChild(tdActions);
+
+            return tr;
+        }
+
+        // Перенумеровать строки (для режима редактирования)
+        function renumberRows() {
+            const rows = tbody.querySelectorAll('tr');
+            rowCounter = 0;
+            rows.forEach((row, index) => {
+                rowCounter++;
+                const numCell = row.querySelector('td:first-child');
+                if (numCell) numCell.textContent = rowCounter;
+            });
+        }
+
+        // Очистить таблицу локально
+        function clearTable() {
+            tbody.innerHTML = '';
+            rowCounter = 0;
+        }
+
+        // Импорт из текста (TSV) в режиме редактирования
+        function importFromText(text) {
+            if (!text.trim()) {
+                setMessage('Нет данных для импорта', true);
+                return;
+            }
+
+            const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
+            const newRows = [];
+
+            lines.forEach(line => {
+                const cols = line.split('\t');
+                // ожидаем минимум 9 колонок (добавлена колонка "Отмененный")
+                newRows.push({
+                    article: cols[0]?.trim() || '',
+                    account: cols[1]?.trim() || '',
+                    rating: cols[2]?.trim() || '',
+                    text: cols[3]?.trim() || '',
+                    positive_text: cols[4]?.trim() || '',
+                    negative_text: cols[5]?.trim() || '',
+                    photo: cols[6]?.trim() || '',
+                    video: cols[7]?.trim() || '',
+                    isCancelled: cols[8]?.trim() || '' // если есть текст, то он будет отображён в ячейке
+                });
+            });
+
+            if (newRows.length === 0) {
+                setMessage('Не удалось распознать строки', true);
+                return;
+            }
+
+            clearTable();
+            newRows.forEach(data => {
+                const row = createEditRow(data);
+                tbody.appendChild(row);
+            });
+
+            setMessage(`Импортировано ${newRows.length} строк`);
+        }
+
+        // Собрать данные из таблицы (для сохранения) - только в режиме редактирования
+        function collectTableData() {
+            const rows = tbody.querySelectorAll('tr');
+            const data = [];
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td[contenteditable="true"]');
+                const numCell = row.querySelector('td:first-child');
+                const rowNumber = numCell ? numCell.innerText.trim() : '';
+
+                if (cells.length >= 9) {
+                    data.push({
+                        row_number: rowNumber,
+                        article: cells[0].innerText.trim(),
+                        account: cells[1].innerText.trim(),
+                        rating: cells[2].innerText.trim(),
+                        text: cells[3].innerText.trim(),
+                        positive_text: cells[4].innerText.trim(),
+                        negative_text: cells[5].innerText.trim(),
+                        photo: cells[6].innerText.trim(),
+                        video: cells[7].innerText.trim(),
+                        isCancelled: cells[8].innerText.trim() !== '' // true если не пусто
+                    });
+                }
+            });
+            return data;
+        }
+
+        // Загрузить данные с сервера (GET /get_tz) и обновить таблицу
+        async function fetchAndRenderTable() {
+            setLoading(true, 'загрузка данных...');
+            try {
+                const resp = await fetch(`${BASE_URL}/automations/feedbacks/get_tz`);
+                if (!resp.ok) {
+                    throw new Error(`HTTP ${resp.status}`);
+                }
+                const result = await resp.json();
+                if (result.status === true && Array.isArray(result.data)) {
+                    if (result.data.length > 0) {
+                        // Режим просмотра
+                        clearTable();
+                        rowCounter = 0;
+                        result.data.forEach(item => {
+                            const row = createViewRow(item);
+                            tbody.appendChild(row);
+                            rowCounter++;
+                        });
+                        setViewMode(true);
+                        setMessage(`Загружено ${result.data.length} записей`);
+                    } else {
+                        // Нет данных, режим редактирования
+                        clearTable();
+                        setViewMode(false);
+                        // Добавим одну пустую строку для удобства
+                        addEmptyRow();
+                        setMessage('Нет данных. Можно импортировать или добавить строки.');
+                    }
+                } else {
+                    throw new Error('Некорректный ответ сервера');
+                }
+            } catch (err) {
+                setMessage(`Ошибка загрузки: ${err.message}`, true);
+                // В случае ошибки переходим в режим редактирования
+                clearTable();
+                setViewMode(false);
+                addEmptyRow();
+            } finally {
+                setLoading(false, '');
+            }
+        }
+
+        // Сохранить таблицу (POST add_tz)
+        async function saveTable() {
+            if (isViewMode) {
+                setMessage('В режиме просмотра сохранение запрещено', true);
+                return;
+            }
+            const data = collectTableData();
+            if (data.length === 0) {
+                setMessage('Таблица пуста', true);
+                return;
+            }
+
+            setLoading(true, 'сохранение...');
+            try {
+                const resp = await fetch(`${BASE_URL}/automations/feedbacks/add_tz`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                let errorMsg = '';
+                if (!resp.ok) {
+                    // пытаемся прочитать тело ошибки
+                    try {
+                        const errData = await resp.json();
+                        errorMsg = errData.msg || resp.statusText;
+                    } catch {
+                        errorMsg = await resp.text() || resp.statusText;
+                    }
+                    throw new Error(`HTTP ${resp.status}: ${errorMsg}`);
+                }
+
+                const result = await resp.json();
+                setMessage(`✅ Сохранено: ${result.message || 'OK'}`);
+                // После успешного сохранения перезагружаем таблицу с сервера
+                await fetchAndRenderTable();
+            } catch (err) {
+                setMessage(`❌ Ошибка: ${err.message}`, true);
+                setLoading(false, '');
+            }
+        }
+
+        // Очистить таблицу на сервере и локально
+        async function clearTableOnServer() {
+            setLoading(true, 'очистка...');
+            try {
+                const resp = await fetch(`${BASE_URL}/automations/feedbacks/clear_tz`);
+                if (!resp.ok) {
+                    throw new Error(`HTTP ${resp.status}`);
+                }
+                setMessage('Таблица очищена на сервере');
+                // Переходим в режим редактирования
+                clearTable();
+                setViewMode(false);
+                addEmptyRow();
+            } catch (err) {
+                setMessage(`Ошибка очистки: ${err.message}`, true);
+            } finally {
+                setLoading(false, '');
+            }
+        }
+
+        // Отправить действие start/stop
+        async function sendAction(action) {
+            setLoading(true, `выполнение ${action}...`);
+            try {
+                const resp = await fetch(`${BASE_URL}/automations/feedbacks/action?action=${action}`);
+                if (!resp.ok) {
+                    let errorMsg = '';
+                    try {
+                        const errData = await resp.json();
+                        errorMsg = errData.msg || resp.statusText;
+                    } catch {
+                        errorMsg = await resp.text() || resp.statusText;
+                    }
+                    throw new Error(errorMsg);
+                }
+                setMessage(`✅ Действие ${action} выполнено`);
+                // После действия обновляем таблицу, чтобы получить актуальные статусы
+                await fetchAndRenderTable();
+            } catch (err) {
+                setMessage(`❌ Ошибка: ${err.message}`, true);
+                setLoading(false, '');
+            }
+        }
+
+        // Загрузить файлы
+        async function uploadFiles(files) {
+            if (isViewMode) {
+                setMessage('В режиме просмотра загрузка файлов запрещена', true);
+                return;
+            }
+            if (!files.length) return;
+
+            setLoading(true, 'загрузка файлов...');
+            let successCount = 0;
+            let errorCount = 0;
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const formData = new FormData();
+                formData.append('file', file);
+
+                try {
+                    const resp = await fetch(`${BASE_URL}/automations/feedbacks/add_file?name=${encodeURIComponent(file.name)}`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (resp.ok) {
+                        successCount++;
+                    } else {
+                        errorCount++;
+                        console.error(`Ошибка загрузки ${file.name}:`, await resp.text());
+                    }
+                } catch (err) {
+                    errorCount++;
+                    console.error(err);
+                }
+            }
+
+            setLoading(false, '');
+            setMessage(`Файлы загружены: успешно ${successCount}, ошибок ${errorCount}`);
+        }
+
+        // Добавить пустую строку в режиме редактирования
+        function addEmptyRow() {
+            if (isViewMode) {
+                setMessage('Нельзя добавить строку в режиме просмотра', true);
+                return;
+            }
+            const row = createEditRow();
+            tbody.appendChild(row);
+        }
+
+        // --- Инициализация при загрузке ---
+        messageText.innerText = `Сервер: ${BASE_URL}`;
+        fetchAndRenderTable();
+
+        // --- Обработчики событий ---
+
+        // Импорт при вставке в поле
+        pasteInput.addEventListener('paste', (e) => {
+            if (isViewMode) {
+                e.preventDefault();
+                setMessage('Импорт недоступен в режиме просмотра', true);
+                return;
+            }
+            e.preventDefault(); // отменяем стандартную вставку, чтобы текст не попал в поле
+            const pastedText = e.clipboardData.getData('text');
+            if (pastedText.trim()) {
+                importFromText(pastedText);
+                pasteInput.value = ''; // очищаем поле
+            } else {
+                setMessage('Буфер обмена пуст', true);
+            }
+        });
+
+        addRowBtn.addEventListener('click', addEmptyRow);
+        saveTableBtn.addEventListener('click', saveTable);
+        uploadFilesBtn.addEventListener('click', () => {
+            if (isViewMode) {
+                setMessage('Загрузка файлов недоступна в режиме просмотра', true);
+                return;
+            }
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                uploadFiles(Array.from(e.target.files));
+                fileInput.value = '';
+            }
+        });
+
+        // Кнопки очистки
+        clearTableBtn.addEventListener('click', () => {
+            if (!isViewMode) {
+                if (tbody.children.length === 0) {
+                    setMessage('Таблица и так пуста');
+                    return;
+                }
+                if (confirm('Очистить локальную таблицу? Данные не будут сохранены на сервере.')) {
+                    clearTable();
+                    addEmptyRow(); // оставляем одну пустую строку для удобства
+                    setMessage('Таблица очищена локально');
+                }
+            } else {
+                setMessage('Используйте кнопку "Очистить таблицу" в режиме просмотра', true);
+            }
+        });
+
+        clearTableViewBtn.addEventListener('click', async () => {
+            if (isViewMode && confirm('Очистить таблицу на сервере? Это действие нельзя отменить.')) {
+                await clearTableOnServer();
+            }
+        });
+
+        // Действия старт/стоп
+        startActionBtn.addEventListener('click', () => sendAction('start'));
+        stopActionBtn.addEventListener('click', () => sendAction('stop'));
+
+        clearMsgBtn.addEventListener('click', () => setMessage('Ready.'));
+    })();
+</script>
+</body>
+</html>
