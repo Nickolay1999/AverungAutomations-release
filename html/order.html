@@ -187,7 +187,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1750px;
+            min-width: 1900px;
         }
 
         th {
@@ -360,7 +360,7 @@
     <div class="toolbar">
         <div id="editToolbar" class="toolbar-group">
             <div class="paste-section">
-                <textarea id="pasteInput" placeholder="Вставьте строки из Excel/Google Sheets (аккаунт, артикул, поисковый запрос, артикул конкурента, бренд, продавец, размер, адрес доставки, способ оплаты, тип оплаты, отменить) — через табуляцию, поддерживается 4–11 колонок"></textarea>
+                <textarea id="pasteInput" placeholder="Вставьте строки из Excel/Google Sheets (аккаунт, артикул, поисковый запрос, артикул конкурента, бренд, продавец, размер, адрес доставки, способ оплаты, тип оплаты, промокод, отменить) — через табуляцию, поддерживается 4–12 колонок"></textarea>
             </div>
             <button id="addRowBtn" class="btn-secondary">➕ Добавить строку</button>
             <button id="saveTableBtn" class="btn-primary">💾 Сохранить таблицу</button>
@@ -396,6 +396,7 @@
                 <th>Адрес доставки</th>
                 <th>Способ оплаты</th>
                 <th>Тип оплаты</th>
+                <th>Промокод</th>
                 <th class="col-canceled">Отменить</th>
                 <th>Статус</th>
                 <th>Действия</th>
@@ -514,7 +515,7 @@
             tbody.appendChild(row);
         }
 
-        // Создание строки в режиме редактирования (11 редактируемых полей)
+        // Создание строки в режиме редактирования (12 редактируемых полей)
         function createEditRow(data = null) {
             const tr = document.createElement('tr');
             const num = ++rowCounter;
@@ -574,6 +575,12 @@
             tdPaymentType.setAttribute('contenteditable', 'true');
             tdPaymentType.textContent = data?.payment_type || '';
             tr.appendChild(tdPaymentType);
+
+            // Промокод (новый столбец — до "Отменить", после "Тип оплаты")
+            const tdPromocode = document.createElement('td');
+            tdPromocode.setAttribute('contenteditable', 'true');
+            tdPromocode.textContent = data?.promocode || '';
+            tr.appendChild(tdPromocode);
 
             const tdCancel = document.createElement('td');
             tdCancel.classList.add('col-canceled');
@@ -660,6 +667,11 @@
             tdPaymentType.textContent = item.payment_type || '';
             tr.appendChild(tdPaymentType);
 
+            // Промокод
+            const tdPromocode = document.createElement('td');
+            tdPromocode.textContent = item.promocode || '';
+            tr.appendChild(tdPromocode);
+
             const tdCancel = document.createElement('td');
             tdCancel.classList.add('col-canceled');
             tdCancel.textContent = item.cancel ? 'Да' : 'Нет';
@@ -686,7 +698,7 @@
                 const numCell = row.querySelector('td:first-child');
                 const rowNumber = numCell ? numCell.innerText.trim() : '';
 
-                if (editableCells.length >= 11) {
+                if (editableCells.length >= 12) {
                     data.push({
                         row_number: parseInt(rowNumber, 10) || 0,
                         account: editableCells[0].innerText.trim(),
@@ -699,7 +711,8 @@
                         delivery_address: editableCells[7].innerText.trim(),
                         payment_method: editableCells[8].innerText.trim(),
                         payment_type: editableCells[9].innerText.trim(),
-                        cancel: editableCells[10].innerText.trim() !== ''
+                        promocode: editableCells[10].innerText.trim(),
+                        cancel: editableCells[11].innerText.trim() !== ''
                     });
                 } else {
                     console.warn('Пропущена строка с недостаточным количеством ячеек');
@@ -708,7 +721,7 @@
             return data;
         }
 
-        // Импорт из буфера (TSV) — до 11 колонок
+        // Импорт из буфера (TSV) — до 12 колонок
         function importFromText(text) {
             if (!text.trim()) {
                 setMessage('Нет данных для импорта', true);
@@ -732,7 +745,8 @@
                         delivery_address: cols.length >= 8 ? cols[7] : '',
                         payment_method: cols.length >= 9 ? cols[8] : '',
                         payment_type: cols.length >= 10 ? cols[9] : '',
-                        cancel: cols.length >= 11 ? (cols[10].trim() !== '') : false
+                        promocode: cols.length >= 11 ? cols[10] : '',
+                        cancel: cols.length >= 12 ? (cols[11].trim() !== '') : false
                     };
                     newRows.push(row);
                 } else {
@@ -750,7 +764,7 @@
                 const row = createEditRow(data);
                 tbody.appendChild(row);
             });
-            setMessage(`Импортировано ${newRows.length} строк (поля: аккаунт, артикул, поиск, артикул конкурента, бренд, продавец, размер, адрес доставки, способ оплаты, тип оплаты, отменить)`);
+            setMessage(`Импортировано ${newRows.length} строк (поля: аккаунт, артикул, поиск, артикул конкурента, бренд, продавец, размер, адрес доставки, способ оплаты, тип оплаты, промокод, отменить)`);
         }
 
         // Загрузка данных с сервера

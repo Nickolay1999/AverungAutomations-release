@@ -1,0 +1,955 @@
+nik.gun.MainClass -> nik.gun.MainClass:
+    java.nio.file.Path jarPath -> a
+    void <init>() -> <init>
+    void main(java.lang.String[]) -> main
+nik.gun.dbs.DataBase -> nik.gun.a.a:
+    java.sql.Connection con -> a
+    java.sql.Statement stmt -> b
+    nik.gun.dbs.DataBase instance -> c
+    nik.gun.dbs.DataBase getInstance() -> a
+    void <init>() -> <init>
+    java.util.HashMap getConfigs() -> b
+    void putConfig(java.lang.String,java.lang.String) -> a
+    void deleteConfig(java.lang.String) -> a
+    void addFeedback(java.util.ArrayList) -> a
+    void clearFeedbacks() -> c
+    java.util.ArrayList getActiveFeedbacks() -> d
+    java.util.ArrayList getActiveFeedbacksForWork() -> e
+    void setFeedbackStatus(nik.gun.entites.Feedback,java.lang.String,int) -> a
+    java.util.ArrayList getActiveBasketsForWork() -> f
+    void setBasketStatus(nik.gun.entites.Basket,java.lang.String,int) -> a
+    void addBasket(java.util.ArrayList) -> b
+    void clearBaskets() -> g
+    java.util.ArrayList getActiveBaskets() -> h
+    java.util.ArrayList getActiveOrdersForWork() -> i
+    void setOrderStatus(nik.gun.entites.Order,java.lang.String,int) -> a
+    void addOrder(java.util.ArrayList) -> c
+    void clearOrders() -> j
+    java.util.ArrayList getActiveOrders() -> k
+    java.util.ArrayList getActivePVZForWork() -> l
+    void setPVZStatus(nik.gun.entites.PVZ,java.lang.String,int) -> a
+    void addPvz(java.util.ArrayList) -> d
+    void clearPvzs() -> m
+    java.util.ArrayList getActivePvzs() -> n
+    void insertPvzDump(java.lang.String,java.lang.String) -> b
+    java.lang.String getPvzByAddress(java.lang.String) -> b
+    java.lang.String escape(java.lang.String) -> d
+    org.json.JSONArray searchPVZ(java.lang.String) -> c
+    void setReportStatus(nik.gun.entites.ReportTz,java.lang.String,int) -> a
+    void addReportTz(java.util.ArrayList) -> e
+    void clearReportTz() -> o
+    java.util.ArrayList getActiveReportTz() -> p
+    java.util.ArrayList getActiveReportForWork() -> q
+    java.util.ArrayList getActiveRegistrationsForWork() -> r
+    void setRegistrationStatus(nik.gun.entites.Registration,java.lang.String,int) -> a
+    void addRegistration(java.util.ArrayList) -> f
+    void clearRegistrations() -> s
+    java.util.ArrayList getActiveRegistrations() -> t
+    void <clinit>() -> <clinit>
+nik.gun.entites.Automation -> nik.gun.b.a:
+    java.lang.String id -> a
+    java.lang.String name -> b
+    java.lang.String description -> c
+    void <init>(java.lang.String,java.lang.String,java.lang.String) -> <init>
+    org.json.JSONObject toJSON() -> a
+nik.gun.entites.Basket -> nik.gun.b.b:
+    java.lang.String id -> a
+    int nn -> b
+    java.lang.String article -> c
+    java.lang.String account -> d
+    java.lang.String competitor_article -> e
+    java.lang.String search -> f
+    java.lang.String size -> g
+    java.lang.String brand -> h
+    java.lang.String supplier -> i
+    java.lang.String competitor_count -> j
+    java.lang.String status -> k
+    boolean isActive -> l
+    void <init>(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean) -> <init>
+    void <init>(org.json.JSONObject) -> <init>
+    java.lang.String getCompetitor_article() -> a
+    java.lang.String getSearch() -> b
+    java.lang.String getSize() -> c
+    java.lang.String getBrand() -> d
+    java.lang.String getId() -> e
+    int getNn() -> f
+    java.lang.String getArticle() -> g
+    java.lang.String getSupplier() -> h
+    java.lang.String getCompetitor_count() -> i
+    java.lang.String getAccount() -> j
+    org.json.JSONObject toJSON() -> k
+nik.gun.entites.DolphinProfile -> nik.gun.b.c:
+    java.lang.String id -> a
+    java.nio.file.Path path -> b
+    void <init>(java.lang.String,java.nio.file.Path) -> <init>
+    java.lang.String getId() -> a
+    java.nio.file.Path getPath() -> b
+nik.gun.entites.ExcelList -> nik.gun.b.d:
+    java.lang.String listname -> a
+    java.util.ArrayList data -> b
+    void <init>(java.lang.String) -> <init>
+nik.gun.entites.Feedback -> nik.gun.b.e:
+    java.lang.String id -> a
+    int nn -> b
+    java.lang.String article -> c
+    int rating -> d
+    java.lang.String account -> e
+    java.lang.String text -> f
+    java.lang.String pos_text -> g
+    java.lang.String neg_text -> h
+    java.lang.String[] photos -> i
+    java.lang.String[] videos -> j
+    java.lang.String status -> k
+    boolean isCancelled -> l
+    boolean isActive -> m
+    void <init>(java.lang.String,int,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,boolean) -> <init>
+    void <init>(org.json.JSONObject) -> <init>
+    java.lang.String getId() -> a
+    int getNn() -> b
+    java.lang.String getArticle() -> c
+    int getRating() -> d
+    java.lang.String getAccount() -> e
+    java.lang.String getText() -> f
+    java.lang.String getPos_text() -> g
+    java.lang.String getNeg_text() -> h
+    java.nio.file.Path[] getVideosPaths() -> i
+    java.nio.file.Path[] getPhotosPaths() -> j
+    java.lang.String getPhotosAsString() -> k
+    java.lang.String getVideosAsString() -> l
+    boolean isCancelled() -> m
+    org.json.JSONObject toJSON() -> n
+    boolean hasVideos() -> o
+    boolean hasPhotos() -> p
+    boolean checkPhotoAndVideo() -> q
+nik.gun.entites.Fix -> nik.gun.b.f:
+    java.lang.String id -> a
+    java.lang.String account -> b
+    java.util.Date issuedAt -> c
+    void <init>(nik.gun.entites.Profile) -> <init>
+    java.util.Date getIssuedAt() -> a
+    void setIssuedAt(java.util.Date) -> a
+    java.lang.String getAccount() -> b
+nik.gun.entites.Order -> nik.gun.b.g:
+    java.lang.String id -> a
+    int nn -> b
+    java.lang.String article -> c
+    java.lang.String account -> d
+    java.lang.String competitor_article -> e
+    java.lang.String search -> f
+    java.lang.String size -> g
+    java.lang.String brand -> h
+    java.lang.String supplier -> i
+    java.lang.String delivery_address -> j
+    java.lang.String payment_method -> k
+    java.lang.String payment_type -> l
+    java.lang.String promocode -> m
+    boolean cancel -> n
+    java.lang.String status -> o
+    boolean isActive -> p
+    void <init>(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,boolean) -> <init>
+    void <init>(org.json.JSONObject) -> <init>
+    java.lang.String getCompetitor_article() -> a
+    java.lang.String getSearch() -> b
+    java.lang.String getSize() -> c
+    java.lang.String getBrand() -> d
+    java.lang.String getId() -> e
+    int getNn() -> f
+    java.lang.String getArticle() -> g
+    java.lang.String getSupplier() -> h
+    java.lang.String getAccount() -> i
+    java.lang.String getDelivery_address() -> j
+    java.lang.String getPayment_method() -> k
+    java.lang.String getPayment_type() -> l
+    boolean isCancel() -> m
+    java.lang.String getPromocode() -> n
+    org.json.JSONObject toJSON() -> o
+nik.gun.entites.PVZ -> nik.gun.b.h:
+    java.lang.String id -> a
+    int nn -> b
+    java.lang.String account -> c
+    java.lang.String pvz_id -> d
+    java.lang.String status -> e
+    boolean isActive -> f
+    void <init>(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,boolean) -> <init>
+    void <init>(org.json.JSONObject) -> <init>
+    java.lang.String getId() -> a
+    int getNn() -> b
+    java.lang.String getAccount() -> c
+    java.lang.String getPvz_id() -> d
+    org.json.JSONObject toJSON() -> e
+nik.gun.entites.ProductInfo -> nik.gun.b.i:
+    java.lang.String article -> d
+    java.lang.String brand -> a
+    java.lang.String supplier -> b
+    boolean isAdult -> c
+    void <init>(java.lang.String) -> <init>
+nik.gun.entites.Profile -> nik.gun.b.j:
+    java.lang.String name -> a
+    java.lang.String id -> b
+    boolean isOnline -> c
+    java.lang.String token -> d
+    java.nio.file.Path path -> e
+    boolean isWB -> f
+    boolean isOzon -> g
+    long lastModified -> h
+    java.util.List tags -> i
+    java.lang.String fingerprint -> j
+    void <init>(java.io.File) -> <init>
+    void updateFingerprintIfNeed() -> a
+    void initNewProfile() -> b
+    java.lang.String getName() -> c
+    java.lang.String getToken() -> d
+    java.nio.file.Path getPath() -> e
+    boolean isOnline() -> f
+    void setOnline(boolean) -> a
+    java.lang.String getId() -> g
+    org.json.JSONObject toJson() -> h
+    org.json.JSONObject getFingerprint() -> i
+    void setFingerprint(org.json.JSONObject) -> a
+nik.gun.entites.ProfileReport -> nik.gun.b.k:
+    java.lang.String id -> a
+    java.util.ArrayList ozonCheques -> b
+    java.util.ArrayList ozonCodes -> c
+    void <init>() -> <init>
+    java.util.ArrayList getOzonCheques() -> a
+    void setOzonCheques(java.util.ArrayList) -> a
+    java.util.ArrayList getOzonCodes() -> b
+    void setOzonCodes(java.util.ArrayList) -> b
+nik.gun.entites.Registration -> nik.gun.b.l:
+    java.lang.String id -> a
+    java.lang.String account -> b
+    java.lang.String status -> c
+    boolean isActive -> d
+    void <init>(java.lang.String,java.lang.String,java.lang.String,boolean) -> <init>
+    void <init>(org.json.JSONObject) -> <init>
+    java.lang.String getId() -> a
+    java.lang.String getAccount() -> b
+    org.json.JSONObject toJSON() -> c
+nik.gun.entites.ReportTz -> nik.gun.b.m:
+    java.lang.String id -> a
+    int nn -> b
+    java.lang.String account -> c
+    java.lang.String status -> d
+    boolean isActive -> e
+    void <init>(org.json.JSONObject) -> <init>
+    void <init>(java.lang.String,int,java.lang.String,java.lang.String,boolean) -> <init>
+    java.lang.String getId() -> a
+    int getNn() -> b
+    java.lang.String getAccount() -> c
+    org.json.JSONObject toJSON() -> d
+nik.gun.http.MyHttpServer -> nik.gun.c.a:
+    java.util.logging.Logger LOGGER -> a
+    void <init>(boolean) -> <init>
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.GenerateReports -> nik.gun.c.a.a:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.MyHandler -> nik.gun.c.a.b:
+    org.json.JSONObject response -> a
+    java.util.Map params -> b
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    boolean sendResponse(com.sun.net.httpserver.HttpExchange,java.lang.Object,int) -> a
+    void addCorsHeaders(com.sun.net.httpserver.HttpExchange) -> d
+    java.lang.String getBody(com.sun.net.httpserver.HttpExchange) -> b
+    java.util.Map queryToMap(com.sun.net.httpserver.HttpExchange) -> c
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+nik.gun.http.handlers.automations.AutomationPage -> nik.gun.c.a.a.a:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.GetAutomations -> nik.gun.c.a.a.b:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.basket.BasketAddTz -> nik.gun.c.a.a.a.a:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.basket.BasketClearTz -> nik.gun.c.a.a.a.b:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.basket.BasketGetTz -> nik.gun.c.a.a.a.c:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.basket.BasketPage -> nik.gun.c.a.a.a.d:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.basket.SetBasketAction -> nik.gun.c.a.a.a.e:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.feedbacks.FeedbackAddFile -> nik.gun.c.a.a.b.a:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void sendError(com.sun.net.httpserver.HttpExchange,java.lang.String,int) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.feedbacks.FeedbackAddTz -> nik.gun.c.a.a.b.b:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.feedbacks.FeedbackClearTz -> nik.gun.c.a.a.b.c:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.feedbacks.FeedbackGetSettings -> nik.gun.c.a.a.b.d:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.feedbacks.FeedbackGetTz -> nik.gun.c.a.a.b.e:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.feedbacks.FeedbackSetSettings -> nik.gun.c.a.a.b.f:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.feedbacks.FeedbacksPage -> nik.gun.c.a.a.b.g:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.feedbacks.SetFeedbackAction -> nik.gun.c.a.a.b.h:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.order.OrderAddTz -> nik.gun.c.a.a.c.a:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.order.OrderClearTz -> nik.gun.c.a.a.c.b:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.order.OrderGetTz -> nik.gun.c.a.a.c.c:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.order.OrderPage -> nik.gun.c.a.a.c.d:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.order.SetOrderAction -> nik.gun.c.a.a.c.e:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.ozon_report.GenerateOzonReport -> nik.gun.c.a.a.d.a:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.ozon_report.ReportAddTz -> nik.gun.c.a.a.d.b:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.ozon_report.ReportClearTz -> nik.gun.c.a.a.d.c:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.ozon_report.ReportGetTz -> nik.gun.c.a.a.d.d:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.ozon_report.ReportPage -> nik.gun.c.a.a.d.e:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.ozon_report.SetReportAction -> nik.gun.c.a.a.d.f:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.pvz.PVZAddTz -> nik.gun.c.a.a.e.a:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.pvz.PVZClearTz -> nik.gun.c.a.a.e.b:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.pvz.PVZGetTz -> nik.gun.c.a.a.e.c:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.pvz.PVZPage -> nik.gun.c.a.a.e.d:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.pvz.SetPVZAction -> nik.gun.c.a.a.e.e:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.registrations.RegistrationAddTz -> nik.gun.c.a.a.f.a:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.registrations.RegistrationClearTz -> nik.gun.c.a.a.f.b:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.registrations.RegistrationGetTz -> nik.gun.c.a.a.f.c:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.registrations.RegistrationPage -> nik.gun.c.a.a.f.d:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.automations.registrations.SetRegistrationAction -> nik.gun.c.a.a.f.e:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.config.Config -> nik.gun.c.a.b.a:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.config.DeleteConfig -> nik.gun.c.a.b.b:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.config.GetConfig -> nik.gun.c.a.b.c:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.config.PutConfig -> nik.gun.c.a.b.d:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.license.CheckLicense -> nik.gun.c.a.c.a:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.license.LicensePage -> nik.gun.c.a.c.b:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.profile.DeleteProfile -> nik.gun.c.a.d.a:
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+nik.gun.http.handlers.profile.GetProfiles -> nik.gun.c.a.d.b:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.profile.NewProfile -> nik.gun.c.a.d.c:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.profile.OpenProfile -> nik.gun.c.a.d.d:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.profile.ProfileMainPage -> nik.gun.c.a.d.e:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.profile.RenameProfile -> nik.gun.c.a.d.f:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.utils.PvzList -> nik.gun.c.a.e.a:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.utils.SearchPvz -> nik.gun.c.a.e.b:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void <clinit>() -> <clinit>
+nik.gun.http.handlers.utils.UpdatePvz -> nik.gun.c.a.e.c:
+    java.util.logging.Logger LOGGER -> c
+    void <init>() -> <init>
+    void handle(com.sun.net.httpserver.HttpExchange) -> handle
+    void handleMethodNotAllowed(com.sun.net.httpserver.HttpExchange) -> a
+    void lambda$handle$0() -> a
+    void <clinit>() -> <clinit>
+nik.gun.interfaces.MyHandler -> nik.gun.d.a:
+    void handle(java.lang.String) -> a
+nik.gun.managers.AutomationsManager -> nik.gun.e.a:
+    nik.gun.managers.AutomationsManager instance -> a
+    nik.gun.entites.Automation[] automations -> b
+    void <init>() -> <init>
+    nik.gun.managers.AutomationsManager getInstance() -> a
+    org.json.JSONArray getAutomationsAsJSON() -> b
+nik.gun.managers.BasketAutomationManager -> nik.gun.e.b:
+    int delay -> a
+    nik.gun.managers.BasketAutomationManager instance -> b
+    nik.gun.managers.TaskPool taskPool -> c
+    void <init>() -> <init>
+    nik.gun.managers.BasketAutomationManager getInstance() -> a
+    boolean startAction() -> b
+    void stopAction() -> c
+nik.gun.managers.BasketAutomationManager$1 -> nik.gun.e.b$1:
+    nik.gun.entites.Profile val$profile -> a
+    nik.gun.managers.BasketAutomationManager this$0 -> b
+    void <init>(nik.gun.managers.BasketAutomationManager,nik.gun.entites.Profile) -> <init>
+    void prepare(nik.gun.entites.DolphinProfile) -> a
+    nik.gun.tasks.Task create(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> a
+nik.gun.managers.ConfigManager -> nik.gun.e.c:
+    nik.gun.managers.ConfigManager instance -> a
+    java.util.HashMap config -> b
+    nik.gun.managers.ConfigManager getInstance() -> a
+    void <init>() -> <init>
+    void putConfig(java.lang.String,java.lang.String) -> a
+    java.lang.String getValue(java.lang.String) -> a
+    java.lang.String getValueOrDefault(java.lang.String,java.lang.String) -> b
+    org.json.JSONObject getJSON() -> b
+    void deleteConfig(java.lang.String) -> b
+nik.gun.managers.DailyTaskScheduler -> nik.gun.e.d:
+    java.util.concurrent.ScheduledExecutorService scheduler -> a
+    void <init>() -> <init>
+    void start() -> a
+    void scheduleNextTask() -> b
+    void lambda$scheduleNextTask$0() -> c
+nik.gun.managers.DolphinManager -> nik.gun.e.e:
+    java.lang.String local_base_url -> b
+    java.lang.String base_url -> c
+    java.lang.String token -> d
+    java.nio.file.Path dolphin_profiles_path -> a
+    nik.gun.managers.DolphinManager instance -> e
+    kong.unirest.UnirestInstance unirestWithProxy -> f
+    kong.unirest.UnirestInstance unirestWithoutProxy -> g
+    org.json.JSONObject allProfiles -> h
+    nik.gun.managers.DolphinManager getInstance() -> a
+    void <init>() -> <init>
+    void stopAll() -> b
+    boolean dolphinHealth() -> c
+    org.json.JSONObject dolphinStartProfile(java.lang.String,boolean) -> a
+    org.json.JSONObject dolphinStopProfile(java.lang.String) -> a
+    boolean profileIsOnline(java.lang.String) -> b
+    boolean profileIsOnline(java.lang.Long) -> a
+    org.json.JSONObject getListProfiles() -> d
+    org.json.JSONObject newFingerPrint() -> e
+    org.json.JSONObject updateProfile(java.lang.String,org.json.JSONObject) -> a
+    void cleanProfileData(java.nio.file.Path) -> a
+    void lambda$cleanProfileData$0(java.io.File) -> a
+nik.gun.managers.DolphinProfileAllocator -> nik.gun.e.f:
+    nik.gun.managers.DolphinProfileAllocator instance -> a
+    java.util.concurrent.BlockingQueue freeProfiles -> b
+    java.util.Map allProfiles -> c
+    nik.gun.managers.DolphinManager dolphinManager -> d
+    void <init>() -> <init>
+    nik.gun.managers.DolphinProfileAllocator getInstance() -> a
+    nik.gun.entites.DolphinProfile acquire() -> b
+    void release(nik.gun.entites.DolphinProfile) -> a
+nik.gun.managers.FeedbackAutomationManager -> nik.gun.e.g:
+    int delay -> a
+    nik.gun.managers.FeedbackAutomationManager instance -> b
+    nik.gun.managers.TaskPool taskPool -> c
+    void <init>() -> <init>
+    nik.gun.managers.FeedbackAutomationManager getInstance() -> a
+    boolean startAction() -> b
+    void stopAction() -> c
+nik.gun.managers.FeedbackAutomationManager$1 -> nik.gun.e.g$1:
+    nik.gun.entites.Profile val$profile -> a
+    nik.gun.managers.FeedbackAutomationManager this$0 -> b
+    void <init>(nik.gun.managers.FeedbackAutomationManager,nik.gun.entites.Profile) -> <init>
+    void prepare(nik.gun.entites.DolphinProfile) -> a
+    nik.gun.tasks.Task create(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> a
+nik.gun.managers.FixAutomationManager -> nik.gun.e.h:
+    int delay -> a
+    nik.gun.managers.FixAutomationManager instance -> b
+    nik.gun.managers.TaskPool taskPool -> c
+    void <init>() -> <init>
+    nik.gun.managers.FixAutomationManager getInstance() -> a
+    boolean startAction(java.util.ArrayList) -> a
+nik.gun.managers.FixAutomationManager$1 -> nik.gun.e.h$1:
+    nik.gun.entites.Profile val$profile -> a
+    nik.gun.managers.FixAutomationManager this$0 -> b
+    void <init>(nik.gun.managers.FixAutomationManager,nik.gun.entites.Profile) -> <init>
+    void prepare(nik.gun.entites.DolphinProfile) -> a
+    nik.gun.tasks.Task create(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> a
+nik.gun.managers.MainManager -> nik.gun.e.i:
+    nik.gun.managers.MainManager instance -> a
+    nik.gun.managers.MainManager getInstance(java.lang.String[]) -> a
+    void <init>(java.lang.String[]) -> <init>
+nik.gun.managers.OSManager -> nik.gun.e.j:
+    nik.gun.managers.OSManager instance -> a
+    void <init>() -> <init>
+    nik.gun.managers.OSManager getInstance() -> a
+    java.lang.String getOSName() -> b
+    boolean runApplication(java.lang.String) -> a
+    java.lang.String getProcessNameByPid(long) -> a
+    void openBrowse(java.lang.String) -> b
+nik.gun.managers.OrderAutomationManager -> nik.gun.e.k:
+    int delay -> a
+    nik.gun.managers.OrderAutomationManager instance -> b
+    nik.gun.managers.TaskPool taskPool -> c
+    void <init>() -> <init>
+    nik.gun.managers.OrderAutomationManager getInstance() -> a
+    boolean startAction() -> b
+    void stopAction() -> c
+nik.gun.managers.OrderAutomationManager$1 -> nik.gun.e.k$1:
+    nik.gun.entites.Profile val$profile -> a
+    nik.gun.managers.OrderAutomationManager this$0 -> b
+    void <init>(nik.gun.managers.OrderAutomationManager,nik.gun.entites.Profile) -> <init>
+    void prepare(nik.gun.entites.DolphinProfile) -> a
+    nik.gun.tasks.Task create(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> a
+nik.gun.managers.PVZAutomationManager -> nik.gun.e.l:
+    int delay -> a
+    nik.gun.managers.PVZAutomationManager instance -> b
+    nik.gun.managers.TaskPool taskPool -> c
+    void <init>() -> <init>
+    nik.gun.managers.PVZAutomationManager getInstance() -> a
+    boolean startAction() -> b
+    void stopAction() -> c
+    void lambda$startAction$0() -> d
+nik.gun.managers.PVZAutomationManager$1 -> nik.gun.e.l$1:
+    nik.gun.entites.Profile val$profile -> a
+    nik.gun.managers.PVZAutomationManager this$0 -> b
+    void <init>(nik.gun.managers.PVZAutomationManager,nik.gun.entites.Profile) -> <init>
+    void prepare(nik.gun.entites.DolphinProfile) -> a
+    nik.gun.tasks.Task create(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> a
+nik.gun.managers.ProfileLocks -> nik.gun.e.m:
+    java.util.concurrent.ConcurrentHashMap LOCKS -> a
+    java.util.concurrent.locks.ReentrantLock lock(java.lang.String) -> a
+    void release(java.lang.String,java.util.concurrent.locks.ReentrantLock) -> a
+    java.util.concurrent.locks.ReentrantLock lambda$lock$0(java.lang.String) -> b
+    void <clinit>() -> <clinit>
+nik.gun.managers.ProfileManager -> nik.gun.e.n:
+    nik.gun.managers.ProfileManager instance -> a
+    java.nio.file.Path profilesPath -> b
+    nik.gun.managers.TaskPool taskPool -> c
+    void syncWbTokens() -> a
+    java.nio.file.Path getProfilePath(java.lang.String) -> a
+    nik.gun.managers.ProfileManager getInstance() -> b
+    void <init>() -> <init>
+    java.util.ArrayList getProfiles(java.lang.String) -> b
+    java.lang.String calcNewProfileName() -> f
+    void createNewProfile() -> c
+    boolean runProfile(java.lang.String) -> c
+    boolean deleteProfile(java.io.File) -> a
+    void moveProfileToDolphinProfile(nik.gun.entites.Profile,nik.gun.entites.DolphinProfile) -> a
+    boolean renameProfile(java.lang.String,java.lang.String) -> a
+    void syncAll() -> d
+    boolean checkProfileExist(java.lang.String) -> d
+    java.nio.file.Path getProfilesPath() -> e
+    void lambda$syncAll$7(nik.gun.entites.Profile,java.nio.file.Path) -> a
+    java.nio.file.Path lambda$syncAll$6(java.lang.String) -> e
+    boolean lambda$syncAll$5(java.lang.String) -> f
+    boolean lambda$syncAll$4(java.nio.file.Path) -> a
+    void lambda$moveProfileToDolphinProfile$3(nik.gun.entites.DolphinProfile,java.nio.file.Path) -> a
+    java.nio.file.Path lambda$moveProfileToDolphinProfile$2(java.lang.String) -> g
+    boolean lambda$moveProfileToDolphinProfile$1(java.lang.String) -> h
+    boolean lambda$moveProfileToDolphinProfile$0(java.nio.file.Path) -> b
+nik.gun.managers.ProfileManager$1 -> nik.gun.e.n$1:
+    nik.gun.entites.Profile val$profile -> a
+    nik.gun.managers.ProfileManager this$0 -> b
+    void <init>(nik.gun.managers.ProfileManager,nik.gun.entites.Profile) -> <init>
+    void prepare(nik.gun.entites.DolphinProfile) -> a
+    nik.gun.tasks.Task create(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> a
+nik.gun.managers.ProfileManager$2 -> nik.gun.e.n$2:
+    nik.gun.entites.Profile val$profile -> a
+    nik.gun.managers.ProfileManager this$0 -> b
+    void <init>(nik.gun.managers.ProfileManager,nik.gun.entites.Profile) -> <init>
+    void prepare(nik.gun.entites.DolphinProfile) -> a
+    nik.gun.tasks.Task create(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> a
+nik.gun.managers.RegistrationAutomationManager -> nik.gun.e.o:
+    int delay -> a
+    nik.gun.managers.RegistrationAutomationManager instance -> b
+    nik.gun.managers.TaskPool taskPool -> c
+    void <init>() -> <init>
+    nik.gun.managers.RegistrationAutomationManager getInstance() -> a
+    boolean startAction() -> b
+    void stopAction() -> c
+nik.gun.managers.RegistrationAutomationManager$1 -> nik.gun.e.o$1:
+    nik.gun.entites.Profile val$profile -> a
+    nik.gun.managers.RegistrationAutomationManager this$0 -> b
+    void <init>(nik.gun.managers.RegistrationAutomationManager,nik.gun.entites.Profile) -> <init>
+    void prepare(nik.gun.entites.DolphinProfile) -> a
+    nik.gun.tasks.Task create(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> a
+nik.gun.managers.ReportAutomationManager -> nik.gun.e.p:
+    int delay -> a
+    nik.gun.managers.ReportAutomationManager instance -> b
+    nik.gun.managers.TaskPool taskPool -> c
+    void <init>() -> <init>
+    nik.gun.managers.ReportAutomationManager getInstance() -> a
+    boolean startAction() -> b
+    void stopAction() -> c
+nik.gun.managers.ReportAutomationManager$1 -> nik.gun.e.p$1:
+    nik.gun.entites.Profile val$profile -> a
+    nik.gun.managers.ReportAutomationManager this$0 -> b
+    void <init>(nik.gun.managers.ReportAutomationManager,nik.gun.entites.Profile) -> <init>
+    void prepare(nik.gun.entites.DolphinProfile) -> a
+    nik.gun.tasks.Task create(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> a
+nik.gun.managers.ReportManager -> nik.gun.e.q:
+    java.util.List ozonReports -> a
+    void generateFile() -> a
+    void <clinit>() -> <clinit>
+nik.gun.managers.TaskPool -> nik.gun.e.r:
+    java.util.concurrent.ThreadPoolExecutor executor -> a
+    nik.gun.managers.DolphinProfileAllocator allocator -> b
+    nik.gun.managers.DolphinManager dolphinManager -> c
+    boolean shuttingDown -> d
+    nik.gun.managers.TaskPool autoInstance -> e
+    nik.gun.managers.TaskPool manualInstance -> f
+    nik.gun.managers.TaskPool registrationInstance -> g
+    nik.gun.managers.TaskPool systemInstance -> h
+    void <init>(int) -> <init>
+    nik.gun.managers.TaskPool getAutoInstance() -> a
+    nik.gun.managers.TaskPool getManualInstance() -> b
+    nik.gun.managers.TaskPool getRegistrationInstance() -> c
+    nik.gun.managers.TaskPool getSystemInstance() -> d
+    void submitTask(nik.gun.entites.Profile,java.lang.Object,nik.gun.tasks.TaskFactory) -> a
+    void submitTask(nik.gun.entites.Profile,java.lang.Object,nik.gun.tasks.TaskFactory,boolean) -> a
+    void reset() -> e
+    void lambda$submitTask$0(nik.gun.entites.Profile,nik.gun.tasks.TaskFactory,boolean,java.lang.Object) -> a
+nik.gun.managers.TaskPool$NamedThreadFactory -> nik.gun.e.r$a:
+    java.lang.String namePrefix -> a
+    java.util.concurrent.atomic.AtomicInteger threadNumber -> b
+    void <init>(java.lang.String) -> <init>
+    java.lang.Thread newThread(java.lang.Runnable) -> newThread
+nik.gun.security.Licence -> nik.gun.f.a:
+    nik.gun.security.Licence instance -> b
+    java.lang.String uuid -> a
+    nik.gun.security.Licence getInstance() -> a
+    void <init>() -> <init>
+    java.lang.String loadUUID() -> b
+nik.gun.security.LicenseManager -> nik.gun.f.b:
+    boolean isACTIVATED -> a
+    nik.gun.security.LicenseManager instance -> b
+    void <init>() -> <init>
+    nik.gun.security.LicenseManager getInstance() -> a
+    void checkLicense() -> b
+    void activateLicense(java.lang.String) -> b
+    boolean isActivated() -> c
+    void handle(java.lang.String) -> a
+nik.gun.security.TCPLicenseClient -> nik.gun.f.c:
+    java.net.Socket clientSocket -> c
+    java.io.PrintWriter out -> d
+    java.io.BufferedReader in -> e
+    java.lang.String ip -> f
+    int port -> g
+    nik.gun.security.TCPLicenseClient instance -> h
+    java.lang.String input -> i
+    java.lang.String status -> a
+    nik.gun.interfaces.MyHandler handlerClass -> b
+    nik.gun.security.TCPLicenseClient getInstance() -> a
+    void <init>() -> <init>
+    void run() -> run
+    void send(java.lang.String) -> a
+nik.gun.security.TCPLicenseClient$1 -> nik.gun.f.c$1:
+    nik.gun.security.TCPLicenseClient this$0 -> a
+    void <init>(nik.gun.security.TCPLicenseClient) -> <init>
+    void run() -> run
+nik.gun.tasks.AutoRegistrationTask -> nik.gun.g.a:
+    void <init>(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> <init>
+    void run() -> run
+    boolean waitForSmsCodeAndSubmit(nik.gun.entites.Registration) -> a
+nik.gun.tasks.BasketBehaviorTask -> nik.gun.g.b:
+    nik.gun.entites.Basket basket -> d
+    nik.gun.entites.ProductInfo productInfo -> e
+    void <init>(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> <init>
+    void run() -> run
+nik.gun.tasks.FeedbackBehaviorTask -> nik.gun.g.c:
+    nik.gun.entites.Feedback feedback -> d
+    void <init>(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> <init>
+    kong.unirest.json.JSONObject getPurchase(java.lang.String) -> h
+    boolean setFeedbackByApi() -> h
+    void run() -> run
+nik.gun.tasks.FixTask -> nik.gun.g.d:
+    void <init>(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> <init>
+    void run() -> run
+    boolean changeToken() -> h
+nik.gun.tasks.OrderBehaviorTask -> nik.gun.g.e:
+    nik.gun.entites.Order order -> d
+    nik.gun.entites.ProductInfo productInfo -> e
+    void <init>(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> <init>
+    void run() -> run
+    boolean setPromocode() -> h
+    boolean setPayments() -> i
+nik.gun.tasks.PVZTask -> nik.gun.g.f:
+    nik.gun.entites.PVZ pvz_tz -> d
+    void <init>(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> <init>
+    void applyCookies() -> a
+    void run() -> run
+nik.gun.tasks.RegistrationTask -> nik.gun.g.g:
+    void <init>(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> <init>
+    void run() -> run
+nik.gun.tasks.ReportProfileTask -> nik.gun.g.h:
+    java.util.ArrayList chequesTable -> d
+    java.util.ArrayList codesTable -> e
+    java.lang.String nextPageUrl -> f
+    boolean listenerAdded -> g
+    void <init>(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> <init>
+    java.lang.String convert(java.lang.String) -> c
+    void downloadCheque(java.lang.String,java.lang.String) -> a
+    void run() -> run
+    void lambda$parseOzonCheques$2(com.microsoft.playwright.Response) -> a
+    void lambda$downloadCheque$1(com.microsoft.playwright.Page,java.lang.String) -> a
+    void lambda$downloadCheque$0(java.nio.file.Path,java.lang.String,com.microsoft.playwright.Page,com.microsoft.playwright.Download) -> a
+nik.gun.tasks.RunProfileTask -> nik.gun.g.i:
+    int ozon_useage -> d
+    void <init>(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> <init>
+    void run() -> run
+nik.gun.tasks.Task -> nik.gun.g.j:
+    int dev_port -> d
+    com.microsoft.playwright.Playwright playwright -> e
+    com.microsoft.playwright.Page page -> a
+    com.microsoft.playwright.Browser browser -> f
+    nik.gun.entites.Profile profile -> b
+    nik.gun.entites.DolphinProfile dp -> g
+    java.lang.Object instruction -> c
+    boolean isClosed -> h
+    void <init>(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> <init>
+    void closePages(com.microsoft.playwright.BrowserContext) -> a
+    void init() -> b
+    void init(java.lang.String) -> a
+    void init(java.lang.String,java.util.Date) -> a
+    void delay(int) -> a
+    void close() -> c
+    void pageDown(int) -> b
+    void smoothScrollToBottom() -> d
+    boolean tryToClick(java.lang.String) -> b
+    boolean tryToClick(com.microsoft.playwright.Locator) -> a
+    void waitWhileVisible(com.microsoft.playwright.Locator) -> b
+    void closeAddModal() -> e
+    void lambda$close$3(java.nio.file.Path) -> a
+    java.nio.file.Path lambda$close$2(java.lang.String) -> c
+    boolean lambda$close$1(java.lang.String) -> d
+    boolean lambda$close$0(java.nio.file.Path) -> b
+nik.gun.tasks.TaskFactory -> nik.gun.g.k:
+    void prepare(nik.gun.entites.DolphinProfile) -> a
+    nik.gun.tasks.Task create(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> a
+nik.gun.tasks.WBTask -> nik.gun.g.l:
+    void <init>(int,nik.gun.entites.Profile,nik.gun.entites.DolphinProfile,java.lang.Object) -> <init>
+    boolean selectSize(java.lang.String) -> c
+    boolean setBrand(java.lang.String) -> d
+    boolean setSupplier(java.lang.String) -> e
+    void applyCookies() -> a
+    void saveCookies() -> h
+    java.lang.String getWbToken() -> f
+    void saveWBToken() -> g
+    nik.gun.entites.ProductInfo getProductInfoNew(nik.gun.entites.ProductInfo,java.lang.String) -> a
+    java.lang.String getUIDFromOrders(java.lang.String) -> f
+    boolean rejectOrder(java.lang.String) -> g
+    void close() -> c
+nik.gun.utils.ExcelHelper -> nik.gun.h.a:
+    void <init>() -> <init>
+    java.io.File generateReport(java.lang.String,nik.gun.entites.ExcelList[]) -> a
+nik.gun.utils.ExolveHelper -> nik.gun.h.b:
+    java.lang.String apiKey -> a
+    void <init>() -> <init>
+    java.util.List getMessages(java.lang.String,java.lang.Integer,int) -> a
+nik.gun.utils.ExolveHelper$ExolveException -> nik.gun.h.b$a:
+    int httpStatus -> a
+    void <init>(java.lang.String,int) -> <init>
+nik.gun.utils.ExolveHelper$SmsMessage -> nik.gun.h.b$b:
+    java.lang.String id -> a
+    java.lang.String text -> b
+    java.lang.String sender -> c
+    java.lang.String receiver -> d
+    java.lang.Integer direction -> e
+    java.lang.String status -> f
+    java.lang.String deliveryStatus -> g
+    java.lang.String dateSentReceived -> h
+    void <init>() -> <init>
+    nik.gun.utils.ExolveHelper$SmsMessage fromJson(kong.unirest.json.JSONObject) -> a
+    java.lang.String getText() -> a
+    java.lang.String getDateSentReceived() -> b
+    java.lang.String toString() -> toString
+nik.gun.utils.HtmlReader -> nik.gun.h.c:
+    java.lang.String readConfigHtml(java.io.File) -> a
+nik.gun.utils.JWTUserExtractor -> nik.gun.h.d:
+    java.lang.String extractClaim(java.lang.String,java.lang.String) -> a
+nik.gun.utils.WBApi -> nik.gun.h.e:
+    org.json.JSONArray getPoo() -> a
